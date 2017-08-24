@@ -1,7 +1,5 @@
-Codeschool Project
+React Starter Project
 ---
-
-Welcome.
 
 
 Usage
