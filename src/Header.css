@@ -1,9 +1,25 @@
-.Header {
-    background-color: #010101;
-    color: #FAFAFA;
-    font-family: 'Poiret One', sans-serif;
+.navbar  {
+    background-color: #333333;
 }
 
-.sign-in-button {
-    float: right;
+.header-brand h1 {
+    color: #AAAAAA;
+    font-family: 'Poiret One', sans-serif;
+    text-shadow: 0px 0px 2px #FFFFFF;
 }
+
+.navbar-nav a {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #222222;
+    background-color: #666666;
+    color: #CCCCCC;
+    transition: 0.2s;
+}
+    .navbar-nav a:hover{
+        text-decoration: none;
+        background-color: #555555;
+        box-shadow: 2px 2px 8px #111111;
+        color: #EEEEEE;
+    }

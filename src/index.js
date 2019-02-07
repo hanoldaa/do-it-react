@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Header from "./Header.js";
-import NewTask from "./NewTask.js";
 import 'bootstrap/dist/css/bootstrap.css';
 import firebase from 'firebase';
+import { BrowserRouter } from 'react-router-dom';
+import App from "./App";
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -56,5 +56,8 @@ function googleSignIn() {
     });
 }
     
-ReactDOM.render(<Header />, document.getElementById("header"));
-ReactDOM.render(<NewTask />, document.getElementById("root"));
+ReactDOM.render((
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+), document.getElementById("root"));

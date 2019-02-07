@@ -64,11 +64,6 @@ class NewTask extends Component {
                 </Button>
                 <br />
                 <br />
-                <ul>
-                  {
-                    this.state.tasks.map( task => <li key={task.id}>{task.description} | {task.priority} | {task.dueDate}</li>)
-                  }
-                </ul>
               </Form>
             </Col>
           </Row>
