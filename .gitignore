@@ -1,2 +1,6 @@
 node_modules
-www/bundles.js
+build/
+.vscode
+public/bundle.js
+.firebase
+.firebaserc

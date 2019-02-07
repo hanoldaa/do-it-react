@@ -1,28 +1,34 @@
-const path = require('path');
- 
+const path = require("path");
+const webpack = require("webpack");
+
 module.exports = {
-  context: path.join(__dirname, 'src'),
-  entry: [
-    './main.js',
-  ],
-  output: {
-    path: path.join(__dirname, 'www'),
-    filename: 'bundle.js',
-  },
+  entry: "./src/index.js",
+  mode: "development",
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: "babel-loader",
+        options: { presets: ["@babel/env"] }
       },
-    ],
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      }
+    ]
   },
-  resolve: {
-    modules: [
-      path.join(__dirname, 'node_modules'),
-    ],
+  resolve: { extensions: ["*", ".js", ".jsx"] },
+  output: {
+    path: path.resolve(__dirname, "public/"),
+    publicPath: "/public/",
+    filename: "bundle.js"
   },
+  devServer: {
+    contentBase: path.join(__dirname, "public/"),
+    port: 3000,
+    publicPath: "http://localhost:3000/public/",
+    hotOnly: true
+  },
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 };
