@@ -3,3 +3,7 @@
     color: #FAFAFA;
     font-family: 'Poiret One', sans-serif;
 }
+
+.sign-in-button {
+    float: right;
+}
