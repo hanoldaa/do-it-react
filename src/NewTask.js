@@ -6,21 +6,21 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
 class NewTask extends Component {
-  
-  constructor (props){
-      super(props);
-      this.state = {
-        tasks: []
-      };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      tasks: []
+    };
   }
 
-  componentWillMount(){
+  componentWillMount() {
     let tasksRef = fire.database().ref('tasks');
-      tasksRef.on("child_added", snapshot => {
-        let task = snapshot.val();
-        console.log(task);
-        this.setState({tasks: [task].concat(this.state.tasks)});
-      })
+    tasksRef.on("child_added", snapshot => {
+      let task = snapshot.val();
+      console.log(task);
+      this.setState({ tasks: [task].concat(this.state.tasks) });
+    })
   }
 
   addTask(e) {
@@ -37,7 +37,7 @@ class NewTask extends Component {
       priority: this.priority.value ? this.priority.value : "Low",
       dueDate: new Date().toString(),
       done: false,
-      user: fire.auth().currentUser.isAnonymous ? "Anonymous" : fire.auth().currentUser.uid
+      user: fire.auth().currentUser ? fire.auth().currentUser.uid : "None"
     }
 
     // Initialize list of updates
@@ -60,19 +60,19 @@ class NewTask extends Component {
       <div className="NewTask">
         <Container>
           <Row>
-            <Col md={{span:6, offset:3}}>
+            <Col md={{ span: 6, offset: 3 }}>
               <Form onSubmit={this.addTask.bind(this)}>
                 <Form.Group controlId="description">
                   <Form.Label>Description</Form.Label>
-                  <Form.Control ref={ d => this.description = d } required/>
+                  <Form.Control ref={d => this.description = d} required />
                 </Form.Group>
                 <Form.Group controlId="tags">
                   <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
-                  <Form.Control ref={ t => this.tags = t } />
+                  <Form.Control ref={t => this.tags = t} />
                 </Form.Group>
                 <Form.Group controlId="priority">
                   <Form.Label>Priority</Form.Label>
-                  <Form.Control as="select" ref={ p => this.priority = p } >
+                  <Form.Control as="select" ref={p => this.priority = p} >
                     <option>Low</option>
                     <option>Med</option>
                     <option>High</option>

@@ -19,7 +19,7 @@ function Header() {
                             <NavLink to='/newTask'>New Task</NavLink>
                         </Nav.Item>
                         <Nav.Item>
-                            <NavLink to='/login'>Login</NavLink>
+                            <NavLink to='/login' className="disabled">Login</NavLink>
                         </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>

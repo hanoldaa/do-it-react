@@ -18,9 +18,18 @@
     color: #CCCCCC;
     transition: 0.2s;
 }
-    .navbar-nav a:hover{
+    .navbar-nav a:not(.disabled):hover{
         text-decoration: none;
         background-color: #555555;
         box-shadow: 2px 2px 8px #111111;
         color: #EEEEEE;
+    }
+
+    .navbar-nav a.disabled{
+        background-color: #888888;
+        color: #AAAAAA;
+        pointer-events: none;
+    }
+    .navbar-nav a.disabled:hover{
+        text-decoration: none;
     }
