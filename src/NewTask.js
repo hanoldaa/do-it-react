@@ -3,12 +3,15 @@ import { hot } from "react-hot-loader";
 import fire from "./fire";
 import "./NewTask.css";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { withRouter } from 'react-router-dom';
 
 class NewTask extends Component {
-
+  
   constructor (props){
       super(props);
-      this.state = {tasks: []};
+      this.state = {
+        tasks: []
+      };
   }
 
   componentWillMount(){
@@ -23,21 +26,33 @@ class NewTask extends Component {
   addTask(e) {
     e.preventDefault();
 
+    // Generate new task key
     var newTaskKey = fire.database().ref().child('tasks').push().key;
 
+    // Build new task
     let task = {
-      id: newTaskKey,
+      key: newTaskKey,
       description: this.description.value,
-      priority: this.priority.value,
-      dueDate: new Date().toDateString()
+      tags: this.tags ? this.tags.value : "",
+      priority: this.priority.value ? this.priority.value : "Low",
+      dueDate: new Date().toString(),
+      done: false,
+      user: fire.auth().currentUser.isAnonymous ? "Anonymous" : fire.auth().currentUser.uid
     }
 
+    // Initialize list of updates
     var updates = {};
     updates['/tasks/' + newTaskKey] = task;
 
+    // Add task to database
     fire.database().ref().update(updates);
+
+    // Reset form fields
     this.description.value = '';
-    this.priority.value = 'low';
+    this.priority.value = 'Low';
+
+    // Return to tasks view
+    this.props.history.push('/');
   }
 
   render() {
@@ -49,7 +64,11 @@ class NewTask extends Component {
               <Form onSubmit={this.addTask.bind(this)}>
                 <Form.Group controlId="description">
                   <Form.Label>Description</Form.Label>
-                  <Form.Control ref={ d => this.description = d } />
+                  <Form.Control ref={ d => this.description = d } required/>
+                </Form.Group>
+                <Form.Group controlId="tags">
+                  <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
+                  <Form.Control ref={ t => this.tags = t } />
                 </Form.Group>
                 <Form.Group controlId="priority">
                   <Form.Label>Priority</Form.Label>
@@ -62,8 +81,6 @@ class NewTask extends Component {
                 <Button variant="primary" type="submit">
                   Add Task
                 </Button>
-                <br />
-                <br />
               </Form>
             </Col>
           </Row>
@@ -73,4 +90,4 @@ class NewTask extends Component {
   }
 }
 
-export default hot(module)(NewTask);
+export default hot(module)(withRouter(NewTask));

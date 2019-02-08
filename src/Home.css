@@ -1,0 +1,31 @@
+
+.dot {
+    margin-right: 5px;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 2px solid;
+    background-color: transparent;
+}
+    .dot.red {
+        border-color: #AA4444; 
+    }
+    .dot.green {
+        border-color: #44AA44;
+    }
+    .dot.orange {
+        border-color:#DD9966
+    }
+
+table {
+    border-collapse: separate;
+}
+.table tr {
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px #888888, 2px 2px 9px #CCCCCC;
+    margin-bottom: 20px;
+}
+.table td {
+    border-top: 0;
+}
