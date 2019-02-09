@@ -33,6 +33,7 @@ table {
 
 .notes-button {
     background-color: transparent;
+    color: #666666;
     border: none;
     cursor: pointer;
     float:right;

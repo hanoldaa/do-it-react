@@ -15,6 +15,10 @@ class NewTask extends Component {
     this.handleDateChange = this.handleDateChange.bind(this);
   }
 
+  componentDidMount(){
+    document.getElementsByClassName('react-datepicker__input-container')[0].getElementsByTagName('input')[0].readOnly = true;
+  }
+
   addTask(e) {
     e.preventDefault();
 
