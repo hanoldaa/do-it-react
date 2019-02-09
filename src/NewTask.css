@@ -2,3 +2,31 @@
     margin: 1rem;
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
   }
+
+.react-datepicker__input-container input {
+  background-clip: padding-box;
+  border: 1px solid rgb(206, 212, 218);
+  border-radius: 4px;
+  color: #495057;
+  display: block;
+  font-family: Ubuntu, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-stretch: 100%;
+  font-weight: 400;
+  height:38px;
+  letter-spacing: normal;
+  line-height: 24px;
+  margin: 0;
+  overflow-x: visible;
+  overflow-y: visible;
+  padding: 6px 12px;
+  text-align: start;
+  text-indent: 0px;
+  transition-delay: 0s;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+  width: 330px;
+}
+div.react-datepicker-wrapper, .react-datepicker-wrapper div.react-datepicker__input-container {
+  display:block
+}

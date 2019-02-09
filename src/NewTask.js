@@ -5,6 +5,7 @@ import "./NewTask.css";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class NewTask extends Component {
 
@@ -77,6 +78,10 @@ class NewTask extends Component {
                 </Form.Group>
                 <Form.Group controlId="dueDate">
                   <Form.Label>Due Date</Form.Label>
+                  <DatePicker
+                    selected={this.state.dueDate}
+                    onChange={this.handleDateChange}
+                  />
                 </Form.Group>
                 <Button variant="primary" type="submit">
                   Add Task
@@ -85,10 +90,6 @@ class NewTask extends Component {
             </Col>
           </Row>
         </Container>
-                <DatePicker
-                  selected={this.state.dueDate}
-                  onChange={this.handleDateChange}
-                />
       </div>
     );
   }
