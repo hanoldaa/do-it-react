@@ -24,7 +24,8 @@ class NewTask extends Component {
     // Build new task
     let task = {
       key: newTaskKey,
-      description: this.description.value,
+      task: this.task.value,
+      notes: this.notes.value ? this.notes.value : "",
       tags: this.tags ? this.tags.value : "",
       priority: this.priority.value ? this.priority.value : "Low",
       dueDate: this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever",
@@ -38,10 +39,6 @@ class NewTask extends Component {
 
     // Add task to database
     fire.database().ref().update(updates);
-
-    // Reset form fields
-    this.description.value = '';
-    this.priority.value = 'Low';
 
     // Return to tasks view
     this.props.history.push('/');
@@ -60,9 +57,13 @@ class NewTask extends Component {
           <Row>
             <Col md={{ span: 6, offset: 3 }}>
               <Form onSubmit={this.addTask.bind(this)}>
-                <Form.Group controlId="description">
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control ref={d => this.description = d} required />
+                <Form.Group controlId="task">
+                  <Form.Label>Task</Form.Label>
+                  <Form.Control ref={t => this.task = t} required />
+                </Form.Group>
+                <Form.Group controlId="notes">
+                  <Form.Label>Notes <i>(optional)</i></Form.Label>
+                  <Form.Control ref={n => this.notes = n} required />
                 </Form.Group>
                 <Form.Group controlId="tags">
                   <Form.Label>Tags <i>(separated by commas)</i></Form.Label>

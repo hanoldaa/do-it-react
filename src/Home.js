@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Table, Button, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Tabs, Tab, OverlayTrigger, Popover } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
@@ -75,11 +75,34 @@ class Home extends Component {
                     (this.state.key == 'done' && task.done == true)) {
                     return <tr key={task.key}>
                         <td>
-                            <Button onClick={this.completeTask.bind(this, task.key)}>
-                                Done
-                            </Button>
+                            {
+                                this.state.key == 'to-do' ?
+                                <Button className="complete-task-button" onClick={this.completeTask.bind(this, task.key)}>
+                                    Done
+                                </Button> :
+                                ""
+                            }
                         </td>
-                        <td>{task.description}</td>
+                        <td>
+                            {task.task}
+                            {task.notes ?
+                                <OverlayTrigger
+                                    trigger="click"
+                                    key={task.key}
+                                    placement='auto'
+                                    overlay={
+                                    <Popover
+                                        id={`${task.key} Note`}
+                                        title={`Notes`}
+                                    >
+                                        {task.notes}
+                                    </Popover>
+                                    }
+                                >
+                                    <button className="notes-button"><span className="fas fa-sticky-note"></span></button>
+                                </OverlayTrigger> :
+                                ""}
+                            </td>
                         <td>{task.tags}</td>
                         <td><span className={
                             task.priority == "Low" ? "dot green" : 
