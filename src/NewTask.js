@@ -4,23 +4,14 @@ import fire from "./fire";
 import "./NewTask.css";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
+import DatePicker from "react-datepicker";
 
 class NewTask extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      tasks: []
-    };
-  }
-
-  componentWillMount() {
-    let tasksRef = fire.database().ref('tasks');
-    tasksRef.on("child_added", snapshot => {
-      let task = snapshot.val();
-      console.log(task);
-      this.setState({ tasks: [task].concat(this.state.tasks) });
-    })
+    this.state = {dueDate: new Date()};
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   addTask(e) {
@@ -35,7 +26,7 @@ class NewTask extends Component {
       description: this.description.value,
       tags: this.tags ? this.tags.value : "",
       priority: this.priority.value ? this.priority.value : "Low",
-      dueDate: new Date().toString(),
+      dueDate: this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever",
       done: false,
       user: fire.auth().currentUser ? fire.auth().currentUser.uid : "None"
     }
@@ -53,6 +44,12 @@ class NewTask extends Component {
 
     // Return to tasks view
     this.props.history.push('/');
+  }
+
+  handleDateChange(date) {
+    this.setState({
+      dueDate: date
+    });
   }
 
   render() {
@@ -78,6 +75,9 @@ class NewTask extends Component {
                     <option>High</option>
                   </Form.Control>
                 </Form.Group>
+                <Form.Group controlId="dueDate">
+                  <Form.Label>Due Date</Form.Label>
+                </Form.Group>
                 <Button variant="primary" type="submit">
                   Add Task
                 </Button>
@@ -85,6 +85,10 @@ class NewTask extends Component {
             </Col>
           </Row>
         </Container>
+                <DatePicker
+                  selected={this.state.dueDate}
+                  onChange={this.handleDateChange}
+                />
       </div>
     );
   }

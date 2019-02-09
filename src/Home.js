@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Table, Tabs, Tab } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Tabs, Tab } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
@@ -33,7 +33,7 @@ class Home extends Component {
         });
 
         // Initial load on navigating to page
-        tasksRef.once("value", snapshot => {
+        tasksRef.on("value", snapshot => {
             let tasks = [];
 
             // Get each task
@@ -55,6 +55,17 @@ class Home extends Component {
         this.state.isMounted = false;
     }
 
+    completeTask (key) {
+        console.log("completed " + key);
+        fire.database().ref('/tasks/' + key).update({done: true}, function(error) {
+            console.log("failed to complete " + key + ": " + error);
+        });
+    }
+
+    removeTask (key) {
+        fire.database().ref('/tasks/').remove(key);
+    }
+
     render() {
 
         const taskList = this.state.tasks.map(task =>
@@ -63,6 +74,11 @@ class Home extends Component {
                     (this.state.key == 'to-do' && task.done == false) ||
                     (this.state.key == 'done' && task.done == true)) {
                     return <tr key={task.key}>
+                        <td>
+                            <Button onClick={this.completeTask.bind(this, task.key)}>
+                                Done
+                            </Button>
+                        </td>
                         <td>{task.description}</td>
                         <td>{task.tags}</td>
                         <td><span className={
