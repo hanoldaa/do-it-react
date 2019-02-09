@@ -20,16 +20,39 @@
 
 table {
     border-collapse: separate;
+    border-spacing: 0px 10px;
 }
 .table tr {
     border-radius: 5px;
-    box-shadow: 2px 2px 3px #888888, 2px 2px 9px #CCCCCC;
-    margin-bottom: 20px;
+    box-shadow: 2px 2px 3px #888, 
+                2px 2px 9px #CCC;
 }
+    .table tr.due-overdue {
+        box-shadow: 2px 2px 3px #888, 
+                    2px 2px 9px #CCC,
+                    inset 0px 0px 15px 3px #B44;
+    }
+    .table tr.due-today {
+        box-shadow: 2px 2px 3px #888, 
+                    2px 2px 9px #CCC,
+                    inset 0px 0px 10px 3px rgb(24, 115, 128);
+    }
+    .table tr.due-tomorrow {
+        box-shadow: 2px 2px 3px #888, 
+                    2px 2px 9px #CCC,
+                    inset 0px 0px 10px 3px rgb(118, 191, 197);
+    }
+
 .table td {
-    border-top: 0;
     vertical-align: middle;
 }
+    .table td:first-child {
+        border-radius: 5px 0px 0px 5px;
+    }
+    .table td:last-child {
+        border-radius: 0px 5px 5px 0px;
+    }
+
 
 .notes-button {
     background-color: transparent;

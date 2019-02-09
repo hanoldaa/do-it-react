@@ -68,16 +68,36 @@ class Home extends Component {
 
     render() {
 
+        let today = new Date().setHours(0, 0, 0, 0);
+        let tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        tomorrow = tomorrow.setHours(0, 0, 0, 0);
+
         const taskList = this.state.tasks.map(task =>
             {
+                const showDoneButton = this.state.key == 'to-do' || (this.state.key == 'all' && !task.done);
+
+                const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
+                const dueType = dueDateComparer == today ? "today" :
+                                dueDateComparer == tomorrow ? "tomorrow" :
+                                dueDateComparer < today ? "overdue" :
+                                "whenever";
+                
+                const priorityColor =   task.priority == "Low" ? "green" : 
+                                        task.priority == "Med" ? "orange" : 
+                                        "red";
+
                 if( this.state.key == 'all' ||
                     (this.state.key == 'to-do' && task.done == false) ||
                     (this.state.key == 'done' && task.done == true)) {
-                    return <tr key={task.key}>
+                    return <tr 
+                        key={task.key} 
+                        className={"due-" + dueType}
+                    >
                         <td>
                             {
-                                this.state.key == 'to-do' ?
-                                <Button className="complete-task-button" onClick={this.completeTask.bind(this, task.key)}>
+                                showDoneButton ?
+                                <Button variant="dark" className="complete-task-button" onClick={this.completeTask.bind(this, task.key)}>
                                     Done
                                 </Button> :
                                 ""
@@ -104,11 +124,9 @@ class Home extends Component {
                                 ""}
                             </td>
                         <td>{task.tags}</td>
-                        <td><span className={
-                            task.priority == "Low" ? "dot green" : 
-                            task.priority == "Med" ? "dot orange" : 
-                            "dot red"
-                            }></span>{task.priority}
+                        <td>
+                            <span className={ "dot " + priorityColor }></span>
+                            {task.priority}
                         </td>
                         <td>{new Date(task.dueDate).toDateString()}</td>
                     </tr>
