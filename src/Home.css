@@ -44,6 +44,7 @@ table {
     }
 
 .table td {
+    border: none;
     vertical-align: middle;
 }
     .table td:first-child {
@@ -53,8 +54,30 @@ table {
         border-radius: 0px 5px 5px 0px;
     }
 
+.table td.hidden-column {
+    padding: 0;
+    width: 0;
+}
 
-.notes-button {
+.row-button {
+    position: relative;
+    display: table-cell;
+    line-height: 0;
+    width: 0px;
+    vertical-align: middle;
+}
+    .row-button:first-child {
+        right: 30px;
+    }
+    .row-button:nth-child(2) {
+        right: 55px;
+    }
+
+.row-button button {
+    position: absolute;
+}
+
+.icon-button {
     background-color: transparent;
     color: #666666;
     border: none;

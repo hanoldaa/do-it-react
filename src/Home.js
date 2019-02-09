@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Table, Button, Tabs, Tab, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tooltip, Tabs, Tab, OverlayTrigger, Popover } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
@@ -20,6 +20,20 @@ class Home extends Component {
 
         // Refresh on task add
         tasksRef.on("child_added", snapshot => {
+            
+            // Get task
+            let task = snapshot.val();
+
+            console.log(task);
+
+            // Store task only if component is mounted users match
+            if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
+                this.setState({ tasks: [task].concat(this.state.tasks) });
+            }
+        });
+
+        // Refresh on task add
+        tasksRef.on("child_removed", snapshot => {
             
             // Get task
             let task = snapshot.val();
@@ -56,14 +70,30 @@ class Home extends Component {
     }
 
     completeTask (key) {
-        console.log("completed " + key);
         fire.database().ref('/tasks/' + key).update({done: true}, function(error) {
-            console.log("failed to complete " + key + ": " + error);
+            if(error)
+                console.log("failed to complete " + key + ": " + error);
+            else
+                console.log("completed " + key);
         });
     }
 
-    removeTask (key) {
-        fire.database().ref('/tasks/').remove(key);
+    undoTask (key) {
+        fire.database().ref('/tasks/' + key).update({done: false}, function(error) {
+            if(error)
+                console.log("failed to undo " + key + ": " + error);
+            else
+                console.log("undid " + key);
+        });
+    }
+
+    deleteTask (key) {
+        fire.database().ref('/tasks/' + key).remove(function(error) {
+            if(error)
+                console.log("failed to remove " + key + ": " + error);
+            else
+                console.log("removed " + key);
+        });
     }
 
     render() {
@@ -75,8 +105,6 @@ class Home extends Component {
 
         const taskList = this.state.tasks.map(task =>
             {
-                const showDoneButton = this.state.key == 'to-do' || (this.state.key == 'all' && !task.done);
-
                 const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
                 const dueType = dueDateComparer == today ? "today" :
                                 dueDateComparer == tomorrow ? "tomorrow" :
@@ -94,14 +122,49 @@ class Home extends Component {
                         key={task.key} 
                         className={"due-" + dueType}
                     >
-                        <td>
+                        <td className="hidden-column">
                             {
-                                showDoneButton ?
-                                <Button variant="dark" className="complete-task-button" onClick={this.completeTask.bind(this, task.key)}>
-                                    Done
-                                </Button> :
+                            this.state.key != 'all' ?
+                                <div className="row-button">
+                                    <OverlayTrigger
+                                        key={task.key}
+                                        placement='top'
+                                        delay='500'
+                                        overlay={
+                                        <Tooltip id={`${task.key} Done`}>
+                                            { task.done ? "Redo it!" : "Did it!" }
+                                        </Tooltip>
+                                        }
+                                    >
+                                    {
+                                        task.done ?
+                                        <button className="icon-button" onClick={this.undoTask.bind(this, task.key)}>
+                                            <span className="fas fa-undo-alt"></span>
+                                        </button> :
+                                        <button className="icon-button" onClick={this.completeTask.bind(this, task.key)}>
+                                            <span className="fas fa-check-circle"></span>
+                                        </button>
+                                    }
+                                    </OverlayTrigger>
+                                </div>:
                                 ""
                             }
+                            <div className="row-button">
+                                <OverlayTrigger
+                                    key={task.key}
+                                    placement='top'
+                                    delay='500'
+                                    overlay={
+                                    <Tooltip id={`${task.key} Delete`}>
+                                        Delete it!
+                                    </Tooltip>
+                                    }
+                                >
+                                    <button className="icon-button" onClick={this.deleteTask.bind(this, task.key)}>
+                                        <span className="fas fa-times-circle"></span>
+                                    </button>
+                                </OverlayTrigger>
+                            </div>
                         </td>
                         <td>
                             {task.task}
@@ -119,7 +182,7 @@ class Home extends Component {
                                     </Popover>
                                     }
                                 >
-                                    <button className="notes-button"><span className="fas fa-sticky-note"></span></button>
+                                    <button className="icon-button"><span className="fas fa-sticky-note"></span></button>
                                 </OverlayTrigger> :
                                 ""}
                             </td>
