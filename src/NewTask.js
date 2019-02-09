@@ -63,7 +63,7 @@ class NewTask extends Component {
                 </Form.Group>
                 <Form.Group controlId="notes">
                   <Form.Label>Notes <i>(optional)</i></Form.Label>
-                  <Form.Control ref={n => this.notes = n} required />
+                  <Form.Control ref={n => this.notes = n} />
                 </Form.Group>
                 <Form.Group controlId="tags">
                   <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
