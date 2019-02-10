@@ -22,7 +22,7 @@ table {
     border-collapse: separate;
     border-spacing: 0px 10px;
 }
-.table tr {
+.table tbody tr {
     border-radius: 5px;
     box-shadow: 2px 2px 3px #888, 
                 2px 2px 9px #CCC;
@@ -41,6 +41,20 @@ table {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
                     inset 0px 0px 10px 3px rgb(118, 191, 197);
+    }
+
+.table th {
+    border: none;
+    padding-bottom: 4px;
+}
+    .table th span.inactive {
+        color: #999;
+    }
+    .table th.sortable {
+        cursor: pointer;
+    }
+    .table th span {
+        margin-left: 5px;
     }
 
 .table td {
@@ -79,7 +93,7 @@ table {
 
 .icon-button {
     background-color: transparent;
-    color: #666666;
+    color: #555;
     border: none;
     cursor: pointer;
     float:right;

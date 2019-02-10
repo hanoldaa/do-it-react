@@ -8,7 +8,17 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { tasks: [], isMounted: false, key: 'to-do' };
+        this.state = { 
+            tasks: [], 
+            filteredTasks: [], 
+            sortKey: "",
+            taskFilter: "",
+            tagFilter: "",
+            priorityFilter: "",
+            descending: true, 
+            isMounted: false, 
+            key: 'to-do' 
+        };
     }
 
 
@@ -29,6 +39,7 @@ class Home extends Component {
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
                 this.setState({ tasks: [task].concat(this.state.tasks) });
+                this.setState({ filteredTasks: this.state.tasks });
             }
         });
 
@@ -43,6 +54,7 @@ class Home extends Component {
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
                 this.setState({ tasks: [task].concat(this.state.tasks) });
+                this.setState({ filteredTasks: this.state.tasks });
             }
         });
 
@@ -60,7 +72,7 @@ class Home extends Component {
 
             // Store the list of tasks if component is mounted
             if (this.state.isMounted) {
-                this.setState({ tasks: tasks });
+                this.setState({ tasks: tasks, filteredTasks: tasks });
             }
         });
     }
@@ -96,6 +108,114 @@ class Home extends Component {
         });
     }
 
+    setFilter(newKey){
+
+        var newDescending;
+
+        if(this.state.sortKey == newKey){
+            newDescending = !this.state.descending;
+            this.setState({descending: !this.state.descending});
+        }
+        else{       
+            newDescending = true;
+            this.setState({
+                sortKey: newKey,
+                descending: true
+            });
+        }
+
+        this.filterTasks(newKey, newDescending);
+    }
+
+    filterTasks(newKey, newDescending){
+
+        let filteredTasks = this.state.tasks;
+
+        filteredTasks = this.state.filteredTasks.map(t => {
+            let skipTask = false;
+
+            if ((this.state.taskFilter && !t.task.includes(this.state.taskFilter)) ||
+                (this.state.tagFilter && t.tags.split(',').indexOf(this.state.tagFilter) > -1) ||
+                (this.state.priorityFilter && t.priority == this.state.priorityFilter))
+                skipTask = true;
+            
+            if(!skipTask)
+                return t;
+        });
+
+        if(newKey == '')
+            return;
+
+        console.log("Sorting");
+        
+        switch(newKey){
+            case 'task':
+                if(newDescending)
+                    filteredTasks.sort(function(a, b) {return a.task.localeCompare(b.task)});
+                else
+                    filteredTasks.sort(function(a, b) {return b.task.localeCompare(a.task)});
+                break;
+            case 'priority':
+                if(newDescending){
+                    filteredTasks.sort(function(a, b) {
+                        if(a.priority == 'High'){
+                            if(b.priority == 'Med' || b.priority == 'Low')
+                                return 1;
+                            else
+                                return 0;
+                        }
+                        else if (a.priority == 'Med'){
+                            if(b.priority == 'Low')
+                                return 1;
+                            else if (b.priority == 'High')
+                                return -1;
+                            else
+                                return 0;
+                        }
+                        else{
+                            if(b.priority == 'Med' || b.priority == 'High')
+                                return -1;
+                            else
+                                return 0;
+                        } 
+                    });
+                }
+                else {
+                    filteredTasks.sort(function(b, a) {
+                        if(a.priority == 'High'){
+                            if(b.priority == 'Med' || b.priority == 'Low')
+                                return 1;
+                            else
+                                return 0;
+                        }
+                        else if (a.priority == 'Med'){
+                            if(b.priority == 'Low')
+                                return 1;
+                            else if (b.priority == 'High')
+                                return -1;
+                            else
+                                return 0;
+                        }
+                        else{
+                            if(b.priority == 'Med' || b.priority == 'Low')
+                                return -1;
+                            else
+                                return 0;
+                        } 
+                    });
+                }
+                break;
+            case 'dueDate':
+                if(newDescending)
+                    filteredTasks.sort(function(a, b) {return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate()});
+                else
+                    filteredTasks.sort(function(a, b) {return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate()});
+                break;
+        }
+        
+        this.setState({filteredTasks: filteredTasks});
+    }
+
     render() {
 
         let today = new Date().setHours(0, 0, 0, 0);
@@ -103,7 +223,7 @@ class Home extends Component {
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrow = tomorrow.setHours(0, 0, 0, 0);
 
-        const taskList = this.state.tasks.map(task =>
+        const taskList = this.state.filteredTasks.map(task =>
             {
                 const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
                 const dueType = dueDateComparer == today ? "today" :
@@ -213,6 +333,47 @@ class Home extends Component {
                         </Tabs>
 
                         <Table>
+                            <thead>
+                                <tr>
+                                    <th style={{width:'0', padding:'0'}}></th>
+                                    <th className="sortable" onClick={this.setFilter.bind(this, 'task')}>
+                                        Task
+                                        {
+                                            this.state.sortKey == 'task' ? 
+                                                (this.state.descending ? 
+                                                    <span className="fas fa-caret-down"></span> :
+                                                    <span className="fas fa-caret-up"></span>
+                                                ) :
+                                            <span className="fas fa-caret-down inactive"></span>
+                                        }
+                                    </th>
+                                    <th>
+                                        Tags
+                                    </th>
+                                    <th className="sortable" onClick={this.setFilter.bind(this, 'priority')}>
+                                        Priority
+                                        {
+                                            this.state.sortKey == 'priority' ? 
+                                                (this.state.descending ? 
+                                                    <span className="fas fa-caret-down"></span> :
+                                                    <span className="fas fa-caret-up"></span>
+                                                ) :
+                                            <span className="fas fa-caret-down inactive"></span>
+                                        }
+                                    </th>
+                                    <th className="sortable" onClick={this.setFilter.bind(this, 'dueDate')}>
+                                        Due
+                                        {
+                                            this.state.sortKey == 'dueDate' ? 
+                                                (this.state.descending ? 
+                                                    <span className="fas fa-caret-down"></span> :
+                                                    <span className="fas fa-caret-up"></span>
+                                                ) :
+                                            <span className="fas fa-caret-down inactive"></span>
+                                        }
+                                    </th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 {taskList}
                             </tbody>

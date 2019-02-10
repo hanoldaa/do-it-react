@@ -32,6 +32,7 @@ class NewTask extends Component {
       notes: this.notes.value ? this.notes.value : "",
       tags: this.tags ? this.tags.value : "",
       priority: this.priority.value ? this.priority.value : "Low",
+      createdDate: new Date.toString(),
       dueDate: this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever",
       done: false,
       user: fire.auth().currentUser ? fire.auth().currentUser.uid : "None"
