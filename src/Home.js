@@ -34,8 +34,6 @@ class Home extends Component {
             // Get task
             let task = snapshot.val();
 
-            console.log(task);
-
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
                 this.setState({ tasks: [task].concat(this.state.tasks) });
@@ -48,8 +46,6 @@ class Home extends Component {
             
             // Get task
             let task = snapshot.val();
-
-            console.log(task);
 
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
@@ -146,8 +142,6 @@ class Home extends Component {
         if(newKey == '')
             return;
 
-        console.log("Sorting");
-        
         switch(newKey){
             case 'task':
                 if(newDescending)
@@ -306,7 +300,12 @@ class Home extends Component {
                                 </OverlayTrigger> :
                                 ""}
                             </td>
-                        <td>{task.tags}</td>
+                        <td> {task.tags.split(',').map(function(t){
+                            return <span key={t} className="tag-pill" >
+                                    {t.toLowerCase()}
+                                </span>})
+                            }
+                        </td>
                         <td>
                             <span className={ "dot " + priorityColor }></span>
                             {task.priority}

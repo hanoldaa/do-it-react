@@ -103,3 +103,11 @@ table {
 span.fas {
     line-height: 0;
 }
+
+span.tag-pill {
+    background-color: #DDD;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 8px;
+    margin: 0px 3px;
+}

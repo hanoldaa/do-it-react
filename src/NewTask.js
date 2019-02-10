@@ -6,19 +6,59 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ReactTags from 'react-tag-autocomplete';
+import './TagInput.css';
 
 class NewTask extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {dueDate: new Date()};
+    this.state = {
+      dueDate: new Date(),
+      tags: [],
+      suggestions: []
+    };
     this.handleDateChange = this.handleDateChange.bind(this);
   }
 
+  componentWillMount(){
+
+        let tasksRef = fire.database().ref('tasks');
+
+        // Initial load on navigating to page
+        tasksRef.once("value", snapshot => {
+          let tags = [];
+          let uniqueTags = [];
+
+          // Get each task
+          let uid = 0;
+          snapshot.forEach(childSnapshot => {
+              // Only add task if it belongs to the current user
+              if(childSnapshot.val().user == fire.auth().currentUser.uid){
+                
+                childSnapshot.val().tags.split(',').forEach(tag => {
+                  if(uniqueTags.indexOf(tag.toLowerCase().trim()) == -1){
+                    uniqueTags.push(tag.toLowerCase().trim());
+                    tags.push({id: uid++, name: tag.toLowerCase().trim()});
+                  }
+                })
+
+                console.log(tags);
+              }
+          })
+
+          // Store the list of suggestions
+          this.setState({ suggestions: tags });
+      });
+  }
+
   componentDidMount(){
+    // Disable the date picker keyboard input 
     document.getElementsByClassName('react-datepicker__input-container')[0].getElementsByTagName('input')[0].readOnly = true;
   }
 
+  // Creates and adds the task to the database
+  // Returns to the home page
   addTask(e) {
     e.preventDefault();
 
@@ -30,9 +70,8 @@ class NewTask extends Component {
       key: newTaskKey,
       task: this.task.value,
       notes: this.notes.value ? this.notes.value : "",
-      tags: this.tags ? this.tags.value : "",
+      tags: this.state.tags ? this.state.tags.map(t => t.name).join() : "",
       priority: this.priority.value ? this.priority.value : "Low",
-      createdDate: new Date.toString(),
       dueDate: this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever",
       done: false,
       user: fire.auth().currentUser ? fire.auth().currentUser.uid : "None"
@@ -49,10 +88,28 @@ class NewTask extends Component {
     this.props.history.push('/');
   }
 
+  // Set date when picked from calendar
   handleDateChange(date) {
     this.setState({
       dueDate: date
     });
+  }
+
+  // Delete tags from input
+  handleDelete (i) {
+    // Prevent duplicate tags
+      const tags = this.state.tags.slice(0)
+      tags.splice(i, 1)
+      this.setState({ tags })
+  }
+ 
+  // Adds new tags from input
+  handleAddition (tag) {
+    // Prevent duplicate tags
+    if(this.state.tags.indexOf(tag) == -1){
+      const tags = [].concat(this.state.tags, tag)
+      this.setState({ tags })
+    }
   }
 
   render() {
@@ -60,7 +117,7 @@ class NewTask extends Component {
       <div className="NewTask">
         <Container>
           <Row>
-            <Col md={{ span: 6, offset: 3 }}>
+            <Col md={{ span: 8, offset: 2 }}>
               <Form onSubmit={this.addTask.bind(this)}>
                 <Form.Group controlId="task">
                   <Form.Label>Task</Form.Label>
@@ -72,7 +129,16 @@ class NewTask extends Component {
                 </Form.Group>
                 <Form.Group controlId="tags">
                   <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
-                  <Form.Control ref={t => this.tags = t} />
+                  <ReactTags
+                    tags={this.state.tags}
+                    suggestions={this.state.suggestions}
+                    handleDelete={this.handleDelete.bind(this)}
+                    handleAddition={this.handleAddition.bind(this)} 
+                    autofocus={false}
+                    autoresize={false}
+                    delimiterChars={[',']}
+                    allowNew={true}
+                  />
                 </Form.Group>
                 <Form.Group controlId="priority">
                   <Form.Label>Priority</Form.Label>
