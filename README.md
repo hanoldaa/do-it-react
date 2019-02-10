@@ -8,7 +8,7 @@ Usage
 Start the development server with this command:
 
 ```
-npm start
+npm run start
 ```
 
 
@@ -21,9 +21,9 @@ npm install
 ```
 
 
-Compile
+Build
 ---
 
 ```
-npm run compile
+npm run build
 ```
