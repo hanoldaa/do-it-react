@@ -3,6 +3,7 @@ import { Container, Row, Col, Table, Tooltip, Tabs, Tab, OverlayTrigger, Popover
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
+import Task from './Task.js';
 
 class Home extends Component {
 
@@ -232,86 +233,16 @@ class Home extends Component {
                 if( this.state.key == 'all' ||
                     (this.state.key == 'to-do' && task.done == false) ||
                     (this.state.key == 'done' && task.done == true)) {
-                    return <tr 
-                        key={task.key} 
-                        className={"due-" + dueType}
-                    >
-                        <td className="hidden-column">
-                            {
-                            this.state.key != 'all' ?
-                                <div className="row-button">
-                                    <OverlayTrigger
-                                        key={task.key}
-                                        placement='top'
-                                        delay='500'
-                                        overlay={
-                                        <Tooltip id={`${task.key} Done`}>
-                                            { task.done ? "Redo it!" : "Did it!" }
-                                        </Tooltip>
-                                        }
-                                    >
-                                    {
-                                        task.done ?
-                                        <button className="icon-button" onClick={this.undoTask.bind(this, task.key)}>
-                                            <span className="fas fa-undo-alt"></span>
-                                        </button> :
-                                        <button className="icon-button" onClick={this.completeTask.bind(this, task.key)}>
-                                            <span className="fas fa-check-circle"></span>
-                                        </button>
-                                    }
-                                    </OverlayTrigger>
-                                </div>:
-                                ""
-                            }
-                            <div className="row-button">
-                                <OverlayTrigger
-                                    key={task.key}
-                                    placement='top'
-                                    delay='500'
-                                    overlay={
-                                    <Tooltip id={`${task.key} Delete`}>
-                                        Delete it!
-                                    </Tooltip>
-                                    }
-                                >
-                                    <button className="icon-button" onClick={this.deleteTask.bind(this, task.key)}>
-                                        <span className="fas fa-times-circle"></span>
-                                    </button>
-                                </OverlayTrigger>
-                            </div>
-                        </td>
-                        <td>
-                            {task.task}
-                            {task.notes ?
-                                <OverlayTrigger
-                                    trigger="click"
-                                    key={task.key}
-                                    placement='auto'
-                                    overlay={
-                                    <Popover
-                                        id={`${task.key} Note`}
-                                        title={`Notes`}
-                                    >
-                                        {task.notes}
-                                    </Popover>
-                                    }
-                                >
-                                    <button className="icon-button"><span className="fas fa-sticky-note"></span></button>
-                                </OverlayTrigger> :
-                                ""}
-                            </td>
-                        <td> {task.tags.split(',').map(function(t){
-                            return <span key={t} className="tag-pill" >
-                                    {t.toLowerCase()}
-                                </span>})
-                            }
-                        </td>
-                        <td>
-                            <span className={ "dot " + priorityColor }></span>
-                            {task.priority}
-                        </td>
-                        <td>{new Date(task.dueDate).toDateString()}</td>
-                    </tr>
+                    return <Task key={task.key} 
+                        task={task} 
+                        today={today} 
+                        tomorrow={tomorrow} 
+                        dueType={dueType}
+                        priorityColor={priorityColor}
+                        filter={this.state.key}
+                        undoTask={this.undoTask}
+                        completeTask={this.completeTask}
+                        deleteTask={this.deleteTask}/>
                 }
             }
         );
