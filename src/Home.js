@@ -4,6 +4,7 @@ import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
 import Task from './Task.js';
+import TaskMobile from './TaskMobile.js';
 
 class Home extends Component {
 
@@ -18,10 +19,14 @@ class Home extends Component {
             priorityFilter: "",
             descending: true, 
             isMounted: false, 
-            key: 'to-do' 
+            key: 'to-do',
+            width: window.innerWidth
         };
     }
 
+    componentWillMount() {
+      window.addEventListener('resize', this.handleWindowSizeChange.bind(this));
+    }
 
     // Initialize DB on component mount
     componentDidMount() {
@@ -73,9 +78,14 @@ class Home extends Component {
             }
         });
     }
-
+    
     componentWillUnmount() {
         this.state.isMounted = false;
+        window.removeEventListener('resize', handleWindowSizeChange.bind(this));
+    }
+
+    handleWindowSizeChange () {
+      this.setState({ width: window.innerWidth });
     }
 
     completeTask (key) {
@@ -213,6 +223,9 @@ class Home extends Component {
 
     render() {
 
+        const { width } = this.state;
+        const isMobile = width <= 500;
+
         let today = new Date().setHours(0, 0, 0, 0);
         let tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -221,7 +234,8 @@ class Home extends Component {
         const taskList = this.state.filteredTasks.map(task =>
             {
                 const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
-                const dueType = dueDateComparer == today ? "today" :
+                const dueType = task.done ? "whenever" :
+                                dueDateComparer == today ? "today" :
                                 dueDateComparer == tomorrow ? "tomorrow" :
                                 dueDateComparer < today ? "overdue" :
                                 "whenever";
@@ -233,16 +247,30 @@ class Home extends Component {
                 if( this.state.key == 'all' ||
                     (this.state.key == 'to-do' && task.done == false) ||
                     (this.state.key == 'done' && task.done == true)) {
-                    return <Task key={task.key} 
-                        task={task} 
-                        today={today} 
-                        tomorrow={tomorrow} 
-                        dueType={dueType}
-                        priorityColor={priorityColor}
-                        filter={this.state.key}
-                        undoTask={this.undoTask}
-                        completeTask={this.completeTask}
-                        deleteTask={this.deleteTask}/>
+
+                    if(isMobile) {
+                        return <TaskMobile key={task.key} 
+                            task={task} 
+                            today={today} 
+                            tomorrow={tomorrow} 
+                            dueType={dueType}
+                            priorityColor={priorityColor}
+                            filter={this.state.key}
+                            undoTask={this.undoTask}
+                            completeTask={this.completeTask}
+                            deleteTask={this.deleteTask}/>
+                    } else {
+                        return <Task key={task.key} 
+                            task={task} 
+                            today={today} 
+                            tomorrow={tomorrow} 
+                            dueType={dueType}
+                            priorityColor={priorityColor}
+                            filter={this.state.key}
+                            undoTask={this.undoTask}
+                            completeTask={this.completeTask}
+                            deleteTask={this.deleteTask}/>
+                    }                    
                 }
             }
         );
@@ -262,10 +290,9 @@ class Home extends Component {
                             <Tab eventKey="all" title="All"> </Tab>
                         </Tabs>
 
-                        <Table>
+                        <Table className="sort-bar">
                             <thead>
-                                <tr>
-                                    <th style={{width:'0', padding:'0'}}></th>
+                                <tr>                                    
                                     <th className="sortable" onClick={this.setFilter.bind(this, 'task')}>
                                         Task
                                         {
@@ -304,6 +331,8 @@ class Home extends Component {
                                     </th>
                                 </tr>
                             </thead>
+                        </Table>
+                        <Table>
                             <tbody>
                                 {taskList}
                             </tbody>

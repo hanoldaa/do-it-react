@@ -22,6 +22,16 @@ table {
     border-collapse: separate;
     border-spacing: 0px 10px;
 }
+
+    table.sort-bar {
+        margin-bottom: 0px;
+    }
+
+.mobile-cell{
+    display:inline-block;
+    width: 100%;
+}
+
 .table tbody tr {
     border-radius: 5px;
     box-shadow: 2px 2px 3px #888, 
@@ -35,12 +45,12 @@ table {
     .table tr.due-today {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
-                    inset 0px 0px 10px 3px rgb(24, 115, 128);
+                    inset 0px 0px 10px 3px rgb(24, 128, 24);
     }
     .table tr.due-tomorrow {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
-                    inset 0px 0px 10px 3px rgb(118, 191, 197);
+                    inset 0px 0px 10px 3px rgb(118, 197, 131);
     }
 
 .table th {
@@ -71,6 +81,33 @@ table {
 .table td.hidden-column {
     padding: 0;
     width: 0;
+}
+
+.table td .task-info-stacked.header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #DDD;
+    font-size: 16px;
+    padding: 6px 0px 3px 0px;
+}
+    .table td .task-info-stacked {
+        font-size: 12px;
+        margin-left: 6px;
+        padding: 2px 12px 10px 12px;
+    }
+    .table td .task-info-stacked:last-child {
+        float: right;
+    }
+    .table td .task-info-stacked .btn:last-child {
+        margin-left: 4px;
+    }
+
+
+.table td .task-info-title{
+    color: #888;
+    font-size: 10px;
+    padding: 2px 6px;
+    margin:0px;
 }
 
 .row-button {

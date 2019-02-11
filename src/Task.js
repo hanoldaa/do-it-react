@@ -3,6 +3,17 @@ import { OverlayTrigger, Tooltip, Popover } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 
 function Task(props) {
+
+    let tagsElement = <td></td>;
+
+    if(props.task.tags){
+        tagsElement = <td> {props.task.tags.split(',').map(function(t){
+            return <span key={t} className="tag-pill" >
+                    {t.toLowerCase()}
+                </span>})
+            }
+        </td>
+    }
     return <tr 
         key={props.task.key} 
         className={"due-" + props.dueType}
@@ -71,12 +82,7 @@ function Task(props) {
             </OverlayTrigger> :
             ""}
         </td>
-    <td> {props.task.tags.split(',').map(function(t){
-        return <span key={t} className="tag-pill" >
-                {t.toLowerCase()}
-            </span>})
-        }
-    </td>
+    {tagsElement}
     <td>
         <span className={ "dot " + props.priorityColor }></span>
         {props.task.priority}
