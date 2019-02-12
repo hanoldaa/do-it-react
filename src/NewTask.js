@@ -117,7 +117,7 @@ class NewTask extends Component {
       <div className="NewTask">
         <Container>
           <Row>
-            <Col md={{ span: 8, offset: 2 }}>
+            <Col md={{ span: 12, offset: 0 }}>
               <Form onSubmit={this.addTask.bind(this)}>
                 <Form.Group controlId="task">
                   <Form.Label>Task</Form.Label>

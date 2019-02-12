@@ -24,9 +24,6 @@ class Header extends Component {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav variant="pills" className="justify-content-end">
                             <Nav.Item>
-                                <NavLink to='/newTask'>New Task</NavLink>
-                            </Nav.Item>
-                            <Nav.Item>
                                 <NavLink to='/login' className="disabled">Login</NavLink>
                             </Nav.Item>
                         </Nav>

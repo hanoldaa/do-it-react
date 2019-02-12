@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Table, Tooltip, Tabs, Tab, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Container, Row, Col, Table, Modal, Tabs, Tab, Button, Popover } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
+import NewTask from './NewTask.js';
 import Task from './Task.js';
 import TaskMobile from './TaskMobile.js';
 
@@ -20,7 +21,8 @@ class Home extends Component {
             descending: true, 
             isMounted: false, 
             key: 'to-do',
-            width: window.innerWidth
+            width: window.innerWidth,
+            showNewTaskModal: false
         };
     }
 
@@ -221,6 +223,14 @@ class Home extends Component {
         this.setState({filteredTasks: filteredTasks});
     }
 
+    handleShowNewTaskModal(){
+        this.setState({showNewTaskModal: true});
+    }
+
+    handleCloseNewTaskModal(){
+        this.setState({showNewTaskModal: false});
+    }
+
     render() {
 
         const { width } = this.state;
@@ -274,72 +284,98 @@ class Home extends Component {
                 }
             }
         );
+        
+        let modalSize;
+        if(isMobile) 
+            modalSize = {dialogClassName: "modal-100w"};
+        else 
+            modalSize = {size: "lg"};
 
         return (
-            <Container>
-                <Row>
-                    <Col xs={{ span: 10, offset: 1 }}>
+            <div>
+                <Modal 
+                    { ...modalSize }
+                    show={this.state.showNewTaskModal} 
+                    onHide={this.handleCloseNewTaskModal.bind(this)}
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>New Task</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <NewTask />
+                    </Modal.Body>
+                </Modal>
 
-                        <Tabs
-                            id="tasks-filter-tab"
-                            activeKey={this.state.key}
-                            onSelect={key => this.setState({ key })}
-                        >
-                            <Tab eventKey="to-do" title="To Do"> </Tab>
-                            <Tab eventKey="done" title="Done"> </Tab>
-                            <Tab eventKey="all" title="All"> </Tab>
-                        </Tabs>
+                <Container>
+                    <Row>
+                        <Col xs={{ span: 10, offset: 1 }}>
 
-                        <Table className="sort-bar">
-                            <thead>
-                                <tr>                                    
-                                    <th className="sortable" onClick={this.setFilter.bind(this, 'task')}>
-                                        Task
-                                        {
-                                            this.state.sortKey == 'task' ? 
-                                                (this.state.descending ? 
-                                                    <span className="fas fa-caret-down"></span> :
-                                                    <span className="fas fa-caret-up"></span>
-                                                ) :
-                                            <span className="fas fa-caret-down inactive"></span>
-                                        }
-                                    </th>
-                                    <th>
-                                        Tags
-                                    </th>
-                                    <th className="sortable" onClick={this.setFilter.bind(this, 'priority')}>
-                                        Priority
-                                        {
-                                            this.state.sortKey == 'priority' ? 
-                                                (this.state.descending ? 
-                                                    <span className="fas fa-caret-down"></span> :
-                                                    <span className="fas fa-caret-up"></span>
-                                                ) :
-                                            <span className="fas fa-caret-down inactive"></span>
-                                        }
-                                    </th>
-                                    <th className="sortable" onClick={this.setFilter.bind(this, 'dueDate')}>
-                                        Due
-                                        {
-                                            this.state.sortKey == 'dueDate' ? 
-                                                (this.state.descending ? 
-                                                    <span className="fas fa-caret-down"></span> :
-                                                    <span className="fas fa-caret-up"></span>
-                                                ) :
-                                            <span className="fas fa-caret-down inactive"></span>
-                                        }
-                                    </th>
-                                </tr>
-                            </thead>
-                        </Table>
-                        <Table>
-                            <tbody>
-                                {taskList}
-                            </tbody>
-                        </Table>
-                    </Col>
-                </Row>
-            </Container>
+                            <Tabs
+                                id="tasks-filter-tab"
+                                activeKey={this.state.key}
+                                onSelect={key => this.setState({ key })}
+                            >
+                                <Tab eventKey="to-do" title="To Do"> </Tab>
+                                <Tab eventKey="done" title="Done"> </Tab>
+                                <Tab eventKey="all" title="All"> </Tab>
+                            </Tabs>
+
+                            <Table className="sort-bar">
+                                <thead>
+                                    <tr>                                    
+                                        <th className="sortable" onClick={this.setFilter.bind(this, 'task')}>
+                                            Task
+                                            {
+                                                this.state.sortKey == 'task' ? 
+                                                    (this.state.descending ? 
+                                                        <span className="fas fa-caret-down"></span> :
+                                                        <span className="fas fa-caret-up"></span>
+                                                    ) :
+                                                <span className="fas fa-caret-down inactive"></span>
+                                            }
+                                        </th>
+                                        <th>
+                                            Tags
+                                        </th>
+                                        <th className="sortable" onClick={this.setFilter.bind(this, 'priority')}>
+                                            Priority
+                                            {
+                                                this.state.sortKey == 'priority' ? 
+                                                    (this.state.descending ? 
+                                                        <span className="fas fa-caret-down"></span> :
+                                                        <span className="fas fa-caret-up"></span>
+                                                    ) :
+                                                <span className="fas fa-caret-down inactive"></span>
+                                            }
+                                        </th>
+                                        <th className="sortable" onClick={this.setFilter.bind(this, 'dueDate')}>
+                                            Due
+                                            {
+                                                this.state.sortKey == 'dueDate' ? 
+                                                    (this.state.descending ? 
+                                                        <span className="fas fa-caret-down"></span> :
+                                                        <span className="fas fa-caret-up"></span>
+                                                    ) :
+                                                <span className="fas fa-caret-down inactive"></span>
+                                            }
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </Table>
+                            <Table>
+                                <tbody>
+                                    {taskList}
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </Container>
+
+                <button className="newTaskButton" onClick={this.handleShowNewTaskModal.bind(this)}>
+                    <span className="fas fa-plus"></span>
+                </button>
+            </div>
         );
     }
 }

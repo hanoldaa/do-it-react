@@ -36,21 +36,43 @@ table {
     border-radius: 5px;
     box-shadow: 2px 2px 3px #888, 
                 2px 2px 9px #CCC;
+    -webkit-box-shadow: 2px 2px 3px #888, 
+                        2px 2px 9px #CCC;
+    -moz-box-shadow: 2px 2px 3px #888, 
+                     2px 2px 9px #CCC;
 }
     .table tr.due-overdue {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
                     inset 0px 0px 15px 3px #B44;
+        -webkit-box-shadow: 2px 2px 3px #888, 
+                            2px 2px 9px #CCC,
+                            inset 0px 0px 15px 3px #B44;
+        -moz-box-shadow: 2px 2px 3px #888, 
+                        2px 2px 9px #CCC,
+                        inset 0px 0px 15px 3px #B44;
     }
     .table tr.due-today {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
                     inset 0px 0px 10px 3px rgb(24, 128, 24);
+        -webkit-box-shadow: 2px 2px 3px #888, 
+                            2px 2px 9px #CCC,
+                            inset 0px 0px 10px 3px rgb(24, 128, 24);
+        -moz-box-shadow: 2px 2px 3px #888, 
+                        2px 2px 9px #CCC,
+                        inset 0px 0px 10px 3px rgb(24, 128, 24);
     }
     .table tr.due-tomorrow {
         box-shadow: 2px 2px 3px #888, 
                     2px 2px 9px #CCC,
                     inset 0px 0px 10px 3px rgb(118, 197, 131);
+        -webkit-box-shadow: 2px 2px 3px #888, 
+                            2px 2px 9px #CCC,
+                            inset 0px 0px 10px 3px rgb(118, 197, 131);
+        -moz-box-shadow: 2px 2px 3px #888, 
+                        2px 2px 9px #CCC,
+                        inset 0px 0px 10px 3px rgb(118, 197, 131);
     }
 
 .table th {
@@ -147,4 +169,30 @@ span.tag-pill {
     border-radius: 5px;
     padding: 4px 8px;
     margin: 0px 3px;
+}
+
+.newTaskButton {
+    background-color: #44AA44;
+    color: white;
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    border-radius: 4rem;
+    
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                0px 0px 9px rgba(0, 0, 0, .3);
+    -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                        0px 0px 9px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                     0px 0px 9px rgba(0, 0, 0, .3);
+}
+
+.newTaskButton span{
+    font-size: 2rem;
+    vertical-align: middle;
+    line-height: 1;
+    cursor: pointer;
 }
