@@ -303,7 +303,7 @@ class Home extends Component {
                         <Modal.Title>New Task</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <NewTask />
+                        <NewTask onHide={this.handleCloseNewTaskModal.bind(this)}/>
                     </Modal.Body>
                 </Modal>
 

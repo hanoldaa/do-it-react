@@ -155,7 +155,7 @@ class NewTask extends Component {
                     onChange={this.handleDateChange}
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" onClick={this.props.onHide.bind(this)}>
                   Add Task
                 </Button>
               </Form>
