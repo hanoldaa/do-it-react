@@ -1,11 +1,12 @@
 import React from 'react';
-import { OverlayTrigger, Button, Popover } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 
 function TaskMobile(props) {
 
     let tagsTitleElement;
     let tagsPillsElement;
+    let notesElement;
 
     if(props.task.tags){
         tagsTitleElement = <div className="task-info-title">
@@ -22,38 +23,32 @@ function TaskMobile(props) {
         </div>
     }
 
+    if(props.task.notes){
+        notesElement = <div className="task-info-stacked no-indent">
+            {props.task.notes}
+        </div>
+    }
+
+
     return <tr 
         key={props.task.key} 
         className={"mobile-row due-" + props.dueType}
     >
         <td className="mobile-cell">
+
+            {/* Task Display */}
             <div className="task-info-stacked header">
                 {props.task.task}
             </div>
 
-            <div className="task-info-stacked">
-                {props.task.notes ?
-                    <OverlayTrigger
-                        trigger="click"
-                        key={props.task.key}
-                        placement='auto'
-                        overlay={
-                        <Popover
-                            id={`${props.task.key} Note`}
-                            title={`Notes`}
-                        >
-                            {props.task.notes}
-                        </Popover>
-                        }
-                    >
-                        <button className="icon-button"><span className="fas fa-sticky-note"></span></button>
-                    </OverlayTrigger> :
-                    ""}
-            </div>
+            {/* Notes Display */}
+            {notesElement}
             
+            {/* Tags Display */}
             {tagsTitleElement}
             {tagsPillsElement}
             
+            {/* Priority Display */}
             <div className="task-info-title">
             Priority
             </div>
@@ -62,12 +57,16 @@ function TaskMobile(props) {
                 {props.task.priority}
             </div>
             
+            {/* Due Date Display */}
             <div className="task-info-title">
             Due
             </div>
             <div className="task-info-stacked">
                 {new Date(props.task.dueDate).toDateString()}
             </div>
+
+            
+            {/* Delete/Done/Undo Display */}
             <div className="task-info-stacked">
                 <Button variant="danger" size="sm" onClick={props.deleteTask.bind(this, props.task.key)}>
                     Delete It

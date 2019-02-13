@@ -116,6 +116,10 @@ table {
         font-size: 12px;
         margin-left: 6px;
         padding: 2px 12px 10px 12px;
+    }    
+    .table td .task-info-stacked.no-indent {
+        margin-left: 0px;
+        padding: 2px 12px 10px 6px;
     }
     .table td .task-info-stacked:last-child {
         float: right;
