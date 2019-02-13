@@ -11,7 +11,7 @@ npm install
 Setup Firebase App in Firebase Console
 ---
 
-###Add Firebase to your app
+### Add Firebase to your app
 To add Firebase to your app, you'll need a Firebase project and a short snippet of initialization code that has a few details about your project.
 
 1. Create a Firebase project in the [Firebase console](https://console.firebase.google.com/).
@@ -44,7 +44,7 @@ export default fire;
 
 4. Save `fire.js`.
 
-###Install Firebase CLI Tools
+### Install Firebase CLI Tools
 
 ```
 $ npm install -g firebase-tools
