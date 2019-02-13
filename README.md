@@ -1,6 +1,3 @@
-React Starter Project
----
-
 Setup
 ---
 
