@@ -1,79 +1,47 @@
-
-.dot {
-    margin-right: 5px;
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    border: 2px solid;
-    background-color: transparent;
-}
-    .dot.red {
-        border-color: #AA4444; 
-    }
-    .dot.green {
-        border-color: #44AA44;
-    }
-    .dot.orange {
-        border-color:#DD9966
-    }
-
-table {
-    border-collapse: separate;
-    border-spacing: 0px 10px;
+body{
+    background-color: #222;
+    color: #CCC;
 }
 
-    table.sort-bar {
-        margin-bottom: 0px;
+ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+
+.nav-tabs .nav-link {
+    color: #CCC;
+}
+    .nav-tabs .nav-link.active {
+        color: #CCC;
+        background-color: #333;
     }
 
-.mobile-cell{
+.table {
+    margin-bottom: 0;
+}
+
+.table td.mobile-cell{
     display:inline-block;
     width: 100%;
 }
 
-.table tbody tr {
-    border-radius: 5px;
-    box-shadow: 2px 2px 3px #888, 
-                2px 2px 9px #CCC;
-    -webkit-box-shadow: 2px 2px 3px #888, 
-                        2px 2px 9px #CCC;
-    -moz-box-shadow: 2px 2px 3px #888, 
-                     2px 2px 9px #CCC;
+.table.sort-bar {
+    margin-bottom: 24px;
 }
-    .table tr.due-overdue {
-        box-shadow: 2px 2px 3px #888, 
-                    2px 2px 9px #CCC,
-                    inset 0px 0px 15px 3px #B44;
-        -webkit-box-shadow: 2px 2px 3px #888, 
-                            2px 2px 9px #CCC,
-                            inset 0px 0px 15px 3px #B44;
-        -moz-box-shadow: 2px 2px 3px #888, 
-                        2px 2px 9px #CCC,
-                        inset 0px 0px 15px 3px #B44;
-    }
-    .table tr.due-today {
-        box-shadow: 2px 2px 3px #888, 
-                    2px 2px 9px #CCC,
-                    inset 0px 0px 10px 3px rgb(24, 128, 24);
-        -webkit-box-shadow: 2px 2px 3px #888, 
-                            2px 2px 9px #CCC,
-                            inset 0px 0px 10px 3px rgb(24, 128, 24);
-        -moz-box-shadow: 2px 2px 3px #888, 
-                        2px 2px 9px #CCC,
-                        inset 0px 0px 10px 3px rgb(24, 128, 24);
-    }
-    .table tr.due-tomorrow {
-        box-shadow: 2px 2px 3px #888, 
-                    2px 2px 9px #CCC,
-                    inset 0px 0px 10px 3px rgb(118, 197, 131);
-        -webkit-box-shadow: 2px 2px 3px #888, 
-                            2px 2px 9px #CCC,
-                            inset 0px 0px 10px 3px rgb(118, 197, 131);
-        -moz-box-shadow: 2px 2px 3px #888, 
-                        2px 2px 9px #CCC,
-                        inset 0px 0px 10px 3px rgb(118, 197, 131);
-    }
+
+.table.mobile {
+    border: 1px solid #CCC;
+    margin-bottom: 24px;
+}
+.table.mobile.overdue {
+    border-color: rgb(197, 83, 83);
+}
+.table.mobile.today {
+    border-color: rgb(83, 197, 83);
+}
+.table.mobile.tomorrow {
+    border-color: rgb(83, 170, 197);
+}
 
 .table th {
     border: none;
@@ -92,34 +60,44 @@ table {
 .table td {
     border: none;
     vertical-align: middle;
+    border-bottom: none;
+    border-top: none;
+    padding: 6px 3px;
+    font-size: smaller;
+    page-break-inside: avoid;
+    white-space: nowrap;
 }
-    .table td:first-child {
-        border-radius: 5px 0px 0px 5px;
+    .table td.due-date.today {
+        color: rgb(83, 197, 83);
     }
-    .table td:last-child {
-        border-radius: 0px 5px 5px 0px;
+    .table td.due-date.tommorrw {
+        color: rgb(83, 170, 197);
     }
-
-.table td.hidden-column {
-    padding: 0;
-    width: 0;
-}
-
-.table td .task-info-stacked.header {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: #DDD;
-    font-size: 16px;
-    padding: 6px 0px 3px 0px;
-}
+    .table td.due-date.overdue {
+        color: rgb(197, 83, 83);
+    }
+    .table td.content {
+        font-size: medium;
+        width: 100%;
+    }
+    .table td .task-info-stacked.header {
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #DDD;
+        font-size: 16px;
+        padding: 6px 0px 3px 0px;
+    }
     .table td .task-info-stacked {
         font-size: 12px;
         margin-left: 6px;
-        padding: 2px 12px 10px 12px;
+        padding: 2px 12px 6px 12px;
     }    
+    .table td .task-info-stacked.inline-block {
+        display: inline-block;
+    }
     .table td .task-info-stacked.no-indent {
         margin-left: 0px;
-        padding: 2px 12px 10px 6px;
+        padding: 2px 12px 6px 6px;
     }
     .table td .task-info-stacked:last-child {
         float: right;
@@ -127,48 +105,96 @@ table {
     .table td .task-info-stacked .btn:last-child {
         margin-left: 4px;
     }
-
-
-.table td .task-info-title{
-    color: #888;
-    font-size: 10px;
-    padding: 2px 6px;
-    margin:0px;
-}
+    .table td .task-info-title{
+        color: #888;
+        font-size: 10px;
+        padding: 2px 6px;
+        margin:0px;
+    }
 
 .row-button {
-    position: relative;
-    display: table-cell;
-    line-height: 0;
-    width: 0px;
     vertical-align: middle;
-}
-    .row-button:first-child {
-        right: 30px;
-    }
-    .row-button:nth-child(2) {
-        right: 55px;
-    }
-
-.row-button button {
-    position: absolute;
 }
 
 .icon-button {
     background-color: transparent;
-    color: #555;
     border: none;
     cursor: pointer;
     float:right;
-    vertical-align: middle;
+    color: #CCC;
 }
+
+.table-button {
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 16px;
+    font-size: medium;
+    width: 30px;
+    height: 30px;
+}
+
+    .table td .task-info-stacked .btn {
+        text-align: center;
+    }
+    .table td .task-info-stacked .btn:first-child {
+        border: none;
+        background-color: rgb(197, 83, 83);
+        color: #CCC;
+        transition: 0.15s;
+        transition-timing-function: ease-in-out;
+    }
+        .table td .task-info-stacked .btn:first-child:hover {
+            background-color: rgba(197, 83, 83, 0.5);
+            color: #CCC;
+        }
+
+    .table-button.Low, .table td .task-info-stacked .btn.Low:last-child {
+        border: 1px solid #999;
+        background-color: transparent;
+        color: #999;
+        transition: 0.15s;
+        transition-timing-function: ease-in-out;
+    }
+        .table-button.Low:hover, .table td .task-info-stacked .btn.Low:last-child:hover {
+            border: 2px solid #DDD;
+            background-color: #666;
+            color: #DDD;
+            font-weight: bold;
+        }
+    .table-button.Med, .table td .task-info-stacked .btn.Med:last-child {
+        border: 1px solid #CA6;
+        background-color: transparent;
+        color: #CA6;
+        transition: 0.15s;
+        transition-timing-function: ease-in-out;
+    }
+        .table-button.Med:hover, .table td .task-info-stacked .btn.Med:last-child:hover {
+            border: 2px solid rgb(240, 193, 100);
+            background-color: rgba(240, 193, 100, 0.5);
+            color: rgb(240, 193, 100);
+            font-weight: bold;
+        }
+    .table-button.High, .table td .task-info-stacked .btn.High:last-child {
+        border: 1px solid rgb(197, 83, 83);
+        background-color: transparent;
+        color: rgb(197, 83, 83);
+        transition: 0.15s;
+        transition-timing-function: ease-in-out;
+    }
+        .table-button.High:hover, .table td .task-info-stacked .btn.High:last-child:hover {
+            border: 2px solid rgb(255, 87, 87);
+            background-color: rgba(255, 87, 87, 0.5);
+            color: rgb(255, 87, 87);
+            font-weight: bold;
+        }
 
 span.fas {
     line-height: 0;
 }
 
 span.tag-pill {
-    background-color: #DDD;
+    background-color: #444;
     border: none;
     border-radius: 5px;
     padding: 4px 8px;
@@ -176,7 +202,7 @@ span.tag-pill {
 }
 
 .newTaskButton {
-    background-color: #44AA44;
+    background-color: rgb(92, 123, 133);
     color: white;
     position: fixed;
     bottom: 1em;
@@ -192,6 +218,9 @@ span.tag-pill {
                         0px 0px 9px rgba(0, 0, 0, .3);
     -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
                      0px 0px 9px rgba(0, 0, 0, .3);
+}
+.newTaskButton:hover {
+    background-color: rgb(66, 99, 110);
 }
 
 .newTaskButton span{

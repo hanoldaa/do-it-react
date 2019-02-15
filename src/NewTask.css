@@ -1,6 +1,30 @@
+.modal-content {
+  background-color: #222;
+  color: #CCC;
+}
+
+.modal-header .close {
+  color: #777;
+  text-shadow: 0 1px 0 #fff;
+  -webkit-text-shadow: 0 1px 0 #fff;
+  -moz-text-shadow: 0 1px 0 #fff;
+}
+
 .NewTask {
     margin: 1rem;
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
+  }
+
+select.form-control, .form-control:focus, .form-group input, .react-tags {
+  background-color: #111;
+  color: #CCC;
+}
+  .form-control:focus, .form-group .react-tags.is-focused {
+    border-color: white;
+    box-shadow:0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+    -moz-box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.4);
+    outline: none;
   }
 
 .react-datepicker__input-container input {

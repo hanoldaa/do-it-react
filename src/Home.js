@@ -237,9 +237,14 @@ class Home extends Component {
         const isMobile = width <= 500;
 
         let today = new Date().setHours(0, 0, 0, 0);
+
         let tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrow = tomorrow.setHours(0, 0, 0, 0);
+
+        let yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() + 1);
+        yesterday = yesterday.setHours(0, 0, 0, 0);
 
         const taskList = this.state.filteredTasks.map(task =>
             {
@@ -261,8 +266,10 @@ class Home extends Component {
                     if(isMobile) {
                         return <TaskMobile key={task.key} 
                             task={task} 
-                            today={today} 
+                            today={today}
                             tomorrow={tomorrow} 
+                            yesterday={yesterday}
+                            dueDateComparer={dueDateComparer} 
                             dueType={dueType}
                             priorityColor={priorityColor}
                             filter={this.state.key}
@@ -274,6 +281,8 @@ class Home extends Component {
                             task={task} 
                             today={today} 
                             tomorrow={tomorrow} 
+                            yesterday={yesterday}
+                            dueDateComparer={dueDateComparer} 
                             dueType={dueType}
                             priorityColor={priorityColor}
                             filter={this.state.key}
@@ -363,11 +372,9 @@ class Home extends Component {
                                     </tr>
                                 </thead>
                             </Table>
-                            <Table>
-                                <tbody>
-                                    {taskList}
-                                </tbody>
-                            </Table>
+                            <ul>
+                                {taskList}
+                            </ul>
                         </Col>
                     </Row>
                 </Container>
