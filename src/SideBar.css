@@ -1,0 +1,71 @@
+@import url("https://use.fontawesome.com/releases/v5.5.0/css/all.css");
+
+.side-bar {
+    width: 12rem;
+    float: left;
+    padding: 5vh 0 0 2rem;
+    background-color: #333;
+    min-height: 100vh;
+    position: relative;
+    bottom: 0;
+}
+
+.side-bar .tag-filter-toggle {
+    vertical-align: middle;
+    padding: .5rem 0 .5rem .5rem;
+    cursor: pointer;
+    transition: .15s;
+    margin: 6px 0px;
+}
+    .side-bar .tag-filter-toggle.active {
+        border-radius: 5px 0px 0px 5px;
+        background-color: #444;
+    }
+
+.Collapsible {
+    position: relative;
+    display: block;
+    border-bottom: 1px solid #999;
+}
+    .Collapsible .Collapsible__trigger {
+        cursor: pointer;
+        display: block;
+        border-bottom: 1px solid #999;
+        padding-right: 1.5rem;
+        padding-bottom: 6px;
+        position: relatives;
+    }  
+    
+    .Collapsible .Collapsible__trigger:after {
+        font-family: 'Font Awesome 5 Free';
+        content: '\f078';
+        position: absolute;
+        font-weight: 900;
+        font-size: small;
+        font-style: normal;
+        text-align: center;
+        right: .25rem;
+        width:  1rem;
+        top: 0;
+        height: 1.5rem;
+        display: block;
+        transition: transform 300ms;
+    }    
+        .Collapsible .Collapsible__trigger.is-closed:after {
+            transform: rotateZ(90deg);
+        }
+
+.side-bar .dot {
+    height: 1rem;
+    width: 1rem;
+    margin-right: .5rem;
+    background-color: transparent;
+    border: 2px solid #999;
+    border-radius: 50%;
+    display: inline-block;
+    transition: 0.15s;
+    vertical-align: middle;
+  }
+.side-bar .dot.active {
+    background-color: #CCC;
+  }

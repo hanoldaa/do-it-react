@@ -1,0 +1,174 @@
+/* 
+Overdue: rgb(197, 83, 83)
+Today: rgb(83, 197, 83)
+Tomorrow: rgb(83, 170, 197)
+Whenever: #CCC
+
+High: rgb(197, 83, 83)
+    Hover: rgb(255, 87, 87)
+Medium: #CA6
+    Hover: rgb(240, 193, 100)
+Low: #999
+    Hover: #DDD
+*/
+
+/*=======================*/
+/*  Mobile Card Styling  */
+/*=======================*/
+.table.mobile {
+    border: 1px solid #CCC;
+    margin-bottom: 24px;
+    table-layout: fixed;
+}
+.table.mobile td.mobile-cell{
+    display:inline-block;
+    width: 100%;
+}
+
+
+/*===========================*/
+/*  Expandable Height Spans  */
+/*===========================*/
+.table.mobile .expand-height {
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: normal;
+}
+
+/*=====================*/
+/*  Due Date Coloring  */
+/*=====================*/
+.table.mobile .due-overdue {
+    color: rgb(197, 83, 83);
+}
+.table.mobile .due-today {
+    color: rgb(83, 197, 83);
+}
+.table.mobile .due-tomorrow {
+    color: rgb(83, 170, 197);
+}
+.table.mobile .due-whenever {
+    color: #CCC;
+}
+
+
+/*==================*/
+/*  Mobile Buttons  */
+/*==================*/
+.table.mobile td .task-info-stacked .btn {
+    text-align: center;
+}
+
+
+/*=================*/
+/*  Delete Button  */
+/*=================*/
+.table.mobile td .task-info-stacked .btn:first-child {
+    border: none;
+    background-color: rgb(197, 83, 83);
+    color: #CCC;
+    transition: 0.1s;
+    transition-timing-function: ease-in-out;
+}
+    .table.mobile td .task-info-stacked .btn:first-child:hover {
+        background-color: rgba(197, 83, 83, 0.5);
+        color: #CCC;
+    }
+
+
+
+
+/*========================*/
+/*  Done Button Coloring  */
+/*========================*/
+.table.mobile .table-button {
+    margin: 0 0 0 .5rem;
+}
+
+.table.mobile .table-button {
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 2rem;
+    font-size: small;
+    width: 2rem;
+    height: 2rem;
+}
+
+/*  Low Priority  */
+.table-button.Low {
+    border: 1px solid #999;
+    background-color: transparent;
+    color: #999;
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table-button.Low:hover {
+        border: 2px solid #DDD;
+        background-color: #666;
+        color: #DDD;
+        font-weight: bold;
+    }
+
+/*  Med Priority  */
+.table-button.Med {
+    border: 1px solid #CA6;
+    background-color: transparent;
+    color: #CA6;
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table-button.Med:hover {
+        border: 2px solid rgb(240, 193, 100);
+        background-color: rgba(240, 193, 100, 0.5);
+        color: rgb(240, 193, 100);
+        font-weight: bold;
+    }
+/*  High Priority  */
+.table-button.High {
+    border: 1px solid rgb(197, 83, 83);
+    background-color: transparent;
+    color: rgb(197, 83, 83);
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table-button.High:hover {
+        border: 2px solid rgb(255, 87, 87);
+        background-color: rgba(255, 87, 87, 0.5);
+        color: rgb(255, 87, 87);
+        font-weight: bold;
+    }
+
+    
+
+.table.mobile td .task-info-stacked.header {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #DDD;
+    font-size: 16px;
+    padding: 6px 0px 3px 0px;
+}
+.table.mobile td .task-info-stacked {
+    font-size: 12px;
+    margin-left: 6px;
+    padding: 2px 12px 6px 12px;
+}    
+.table.mobile td .task-info-stacked.inline-block {
+    display: inline-block;
+}
+.table.mobile td .task-info-stacked.no-indent {
+    margin-left: 0px;
+    padding: 2px 12px 6px 6px;
+}
+.table.mobile td .task-info-stacked:last-child {
+    float: right;
+}
+.table.mobile td .task-info-stacked .btn:last-child {
+    margin-left: 4px;
+}
+.table.mobile td .task-info-title{
+    color: #888;
+    font-size: 10px;
+    padding: 2px 6px;
+    margin:0px;
+}

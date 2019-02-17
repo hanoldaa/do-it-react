@@ -1,3 +1,6 @@
+/*===============*/
+/*  Modal Popup  */
+/*===============*/
 .modal-content {
   background-color: #222;
   color: #CCC;
@@ -10,15 +13,34 @@
   -moz-text-shadow: 0 1px 0 #fff;
 }
 
-.NewTask {
+.NewTaskModal {
     margin: 1rem;
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
   }
 
+
+/*==================*/
+/*  Add Task Button */
+/*==================*/
+.NewTaskModal .btn {
+  background-color: rgb(66, 99, 110);
+  border: none;
+}
+  .NewTaskModal .btn:hover {
+    background-color: rgb(41, 65, 73);
+  }
+
+/*=================*/
+/*  Form Controls  */
+/*=================*/
 select.form-control, .form-control:focus, .form-group input, .react-tags {
   background-color: #111;
   color: #CCC;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
+
   .form-control:focus, .form-group .react-tags.is-focused {
     border-color: white;
     box-shadow:0 0 0 0.2rem rgba(255, 255, 255, 0.4);
@@ -27,6 +49,32 @@ select.form-control, .form-control:focus, .form-group input, .react-tags {
     outline: none;
   }
 
+  /*=====================*/
+  /*  Priority Dropdown  */
+  /*=====================*/
+  .priority-select {
+    position: relative;
+  }
+    select.form-control {
+      display: inline-block;
+    }
+    .priority-select span {
+      background-color: transparent;
+      color: #CCC;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      padding: 0px 6px;
+    }
+  
+    /* IE11 hide native dropdown button */
+    select.form-control::-ms-expand {
+      display: none;
+    }
+
+/*===============*/    
+/*  Date Picker  */
+/*===============*/
 .react-datepicker__input-container input {
   background-clip: padding-box;
   border: 1px solid rgb(206, 212, 218);

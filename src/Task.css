@@ -1,0 +1,138 @@
+/*==========================*/
+/*  Notes Popover Coloring  */
+/*==========================*/
+.popover .arrow::after {
+    border-left-color: #444;
+}
+.popover .popover-body {
+    background-color: #444;
+    color: #CCC;
+}
+
+.popover .popover-header {
+    background-color: #333;
+    color: #CCC;
+    border-bottom-color: #222;
+}
+
+/*==============*/
+/*  Task Table  */
+/*==============*/
+.table.desktop {
+    margin-bottom: 2rem;
+}
+
+/*========================*/
+/*  Task Row Formatting   */
+/*========================*/
+.table.desktop td {
+    border: none;
+    vertical-align: middle;
+    border-bottom: 1px solid #CCC;
+    border-top: none;
+    padding: 6px 3px;
+    font-size: smaller;
+    page-break-inside: avoid;
+    white-space: nowrap;
+}
+.table.desktop td:first-child {
+    border: none;
+}
+
+
+.table.desktop .expand-height {
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: normal;
+}
+
+
+/*=====================*/
+/*  Due Date Coloring  */
+/*=====================*/
+.table.desktop td.due-date.today {
+    color: rgb(83, 197, 83);
+}
+.table.desktop td.due-date.tommorrw {
+    color: rgb(83, 170, 197);
+}
+.table.desktop td.due-date.overdue {
+    color: rgb(197, 83, 83);
+}
+.table.desktop td.content {
+    font-size: medium;
+    width: 100%;
+}
+
+/*================*/
+/*  Notes Button  */
+/*================*/
+.notes-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    float:right;
+    color: #CCC;
+}
+
+/*========================*/
+/*  Done Button Coloring  */
+/*========================*/
+
+.table.desktop .table-button {
+    margin-right: .5rem;
+    vertical-align: middle;
+}
+
+.table.desktop .table-button {
+    background-color: transparent;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 2rem;
+    font-size: small;
+    width: 2rem;
+    height: 2rem;
+}
+
+/*  Low Priority  */
+.table.desktop .table-button.Low {
+    border: 1px solid #999;
+    background-color: transparent;
+    color: #999;
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table.desktop .table-button.Low:hover {
+        border: 2px solid #DDD;
+        background-color: #666;
+        color: #DDD;
+        font-weight: bold;
+    }
+/*  Med Priority  */
+.table.desktop .table-button.Med {
+    border: 1px solid #CA6;
+    background-color: transparent;
+    color: #CA6;
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table.desktop .table-button.Med:hover {
+        border: 2px solid rgb(240, 193, 100);
+        background-color: rgba(240, 193, 100, 0.5);
+        color: rgb(240, 193, 100);
+        font-weight: bold;
+    }
+/*  High Priority  */
+.table.desktop .table-button.High {
+    border: 1px solid rgb(197, 83, 83);
+    background-color: transparent;
+    color: rgb(197, 83, 83);
+    transition: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+    .table.desktop .table-button.High:hover {
+        border: 2px solid rgb(255, 87, 87);
+        background-color: rgba(255, 87, 87, 0.5);
+        color: rgb(255, 87, 87);
+        font-weight: bold;
+    }

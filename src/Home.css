@@ -1,6 +1,19 @@
 body{
     background-color: #222;
     color: #CCC;
+    height: 100%;
+}
+
+.content-body {
+    position: relative;
+}
+
+.container-fluid {
+    padding: 1rem;
+}
+
+.content-col {
+    margin-top: 5vh;
 }
 
 ul {
@@ -8,39 +21,8 @@ ul {
     padding-inline-start: 0px;
 }
 
-.nav-tabs .nav-link {
-    color: #CCC;
-}
-    .nav-tabs .nav-link.active {
-        color: #CCC;
-        background-color: #333;
-    }
-
-.table {
-    margin-bottom: 0;
-}
-
-.table td.mobile-cell{
-    display:inline-block;
-    width: 100%;
-}
-
 .table.sort-bar {
     margin-bottom: 24px;
-}
-
-.table.mobile {
-    border: 1px solid #CCC;
-    margin-bottom: 24px;
-}
-.table.mobile.overdue {
-    border-color: rgb(197, 83, 83);
-}
-.table.mobile.today {
-    border-color: rgb(83, 197, 83);
-}
-.table.mobile.tomorrow {
-    border-color: rgb(83, 170, 197);
 }
 
 .table th {
@@ -56,142 +38,6 @@ ul {
     .table th span {
         margin-left: 5px;
     }
-
-.table td {
-    border: none;
-    vertical-align: middle;
-    border-bottom: none;
-    border-top: none;
-    padding: 6px 3px;
-    font-size: smaller;
-    page-break-inside: avoid;
-    white-space: nowrap;
-}
-    .table td.due-date.today {
-        color: rgb(83, 197, 83);
-    }
-    .table td.due-date.tommorrw {
-        color: rgb(83, 170, 197);
-    }
-    .table td.due-date.overdue {
-        color: rgb(197, 83, 83);
-    }
-    .table td.content {
-        font-size: medium;
-        width: 100%;
-    }
-    .table td .task-info-stacked.header {
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #DDD;
-        font-size: 16px;
-        padding: 6px 0px 3px 0px;
-    }
-    .table td .task-info-stacked {
-        font-size: 12px;
-        margin-left: 6px;
-        padding: 2px 12px 6px 12px;
-    }    
-    .table td .task-info-stacked.inline-block {
-        display: inline-block;
-    }
-    .table td .task-info-stacked.no-indent {
-        margin-left: 0px;
-        padding: 2px 12px 6px 6px;
-    }
-    .table td .task-info-stacked:last-child {
-        float: right;
-    }
-    .table td .task-info-stacked .btn:last-child {
-        margin-left: 4px;
-    }
-    .table td .task-info-title{
-        color: #888;
-        font-size: 10px;
-        padding: 2px 6px;
-        margin:0px;
-    }
-
-.row-button {
-    vertical-align: middle;
-}
-
-.icon-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    float:right;
-    color: #CCC;
-}
-
-.table-button {
-    background-color: transparent;
-    cursor: pointer;
-    text-align: center;
-    border-radius: 16px;
-    font-size: medium;
-    width: 30px;
-    height: 30px;
-}
-
-    .table td .task-info-stacked .btn {
-        text-align: center;
-    }
-    .table td .task-info-stacked .btn:first-child {
-        border: none;
-        background-color: rgb(197, 83, 83);
-        color: #CCC;
-        transition: 0.15s;
-        transition-timing-function: ease-in-out;
-    }
-        .table td .task-info-stacked .btn:first-child:hover {
-            background-color: rgba(197, 83, 83, 0.5);
-            color: #CCC;
-        }
-
-    .table-button.Low, .table td .task-info-stacked .btn.Low:last-child {
-        border: 1px solid #999;
-        background-color: transparent;
-        color: #999;
-        transition: 0.15s;
-        transition-timing-function: ease-in-out;
-    }
-        .table-button.Low:hover, .table td .task-info-stacked .btn.Low:last-child:hover {
-            border: 2px solid #DDD;
-            background-color: #666;
-            color: #DDD;
-            font-weight: bold;
-        }
-    .table-button.Med, .table td .task-info-stacked .btn.Med:last-child {
-        border: 1px solid #CA6;
-        background-color: transparent;
-        color: #CA6;
-        transition: 0.15s;
-        transition-timing-function: ease-in-out;
-    }
-        .table-button.Med:hover, .table td .task-info-stacked .btn.Med:last-child:hover {
-            border: 2px solid rgb(240, 193, 100);
-            background-color: rgba(240, 193, 100, 0.5);
-            color: rgb(240, 193, 100);
-            font-weight: bold;
-        }
-    .table-button.High, .table td .task-info-stacked .btn.High:last-child {
-        border: 1px solid rgb(197, 83, 83);
-        background-color: transparent;
-        color: rgb(197, 83, 83);
-        transition: 0.15s;
-        transition-timing-function: ease-in-out;
-    }
-        .table-button.High:hover, .table td .task-info-stacked .btn.High:last-child:hover {
-            border: 2px solid rgb(255, 87, 87);
-            background-color: rgba(255, 87, 87, 0.5);
-            color: rgb(255, 87, 87);
-            font-weight: bold;
-        }
-
-span.fas {
-    line-height: 0;
-}
 
 span.tag-pill {
     background-color: #444;

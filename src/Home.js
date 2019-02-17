@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Table, Modal, Tabs, Tab, Button, Popover } from 'react-bootstrap';
+import { Container, Row, Col, Table, Tabs, Tab } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import './Home.css';
-import NewTask from './NewTask.js';
+import NewTaskModal from './NewTaskModal.js';
 import Task from './Task.js';
 import TaskMobile from './TaskMobile.js';
+import StatusTabs from './StatusTabs.js';
+import SideBar from './SideBar.js';
 
 class Home extends Component {
 
@@ -13,16 +15,17 @@ class Home extends Component {
         super(props);
         this.state = { 
             tasks: [], 
-            filteredTasks: [], 
+            sortedTasks: [], 
             sortKey: "",
             taskFilter: "",
-            tagFilter: "",
+            tagFilter: [],
             priorityFilter: "",
             descending: true, 
             isMounted: false, 
-            key: 'to-do',
+            status: 'to-do',
             width: window.innerWidth,
-            showNewTaskModal: false
+            showNewTaskModal: false,
+            uniqueTags : []
         };
     }
 
@@ -45,7 +48,7 @@ class Home extends Component {
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
                 this.setState({ tasks: [task].concat(this.state.tasks) });
-                this.setState({ filteredTasks: this.state.tasks });
+                this.setState({ sortedTasks: this.state.tasks });
             }
         });
 
@@ -58,7 +61,7 @@ class Home extends Component {
             // Store task only if component is mounted users match
             if (this.state.isMounted && task.user == fire.auth().currentUser.uid) {
                 this.setState({ tasks: [task].concat(this.state.tasks) });
-                this.setState({ filteredTasks: this.state.tasks });
+                this.setState({ sortedTasks: this.state.tasks });
             }
         });
 
@@ -76,7 +79,8 @@ class Home extends Component {
 
             // Store the list of tasks if component is mounted
             if (this.state.isMounted) {
-                this.setState({ tasks: tasks, filteredTasks: tasks });
+                var uniqueTags = this.getUniqueTags(tasks);
+                this.setState({ tasks: tasks, sortedTasks: tasks, uniqueTags: uniqueTags });
             }
         });
     }
@@ -117,7 +121,7 @@ class Home extends Component {
         });
     }
 
-    setFilter(newKey){
+    setSort(newKey){
 
         var newDescending;
 
@@ -133,24 +137,12 @@ class Home extends Component {
             });
         }
 
-        this.filterTasks(newKey, newDescending);
+        this.sortTasks(newKey, newDescending);
     }
 
-    filterTasks(newKey, newDescending){
+    sortTasks(newKey, newDescending){
 
-        let filteredTasks = this.state.tasks;
-
-        filteredTasks = this.state.filteredTasks.map(t => {
-            let skipTask = false;
-
-            if ((this.state.taskFilter && !t.task.includes(this.state.taskFilter)) ||
-                (this.state.tagFilter && t.tags.split(',').indexOf(this.state.tagFilter) > -1) ||
-                (this.state.priorityFilter && t.priority == this.state.priorityFilter))
-                skipTask = true;
-            
-            if(!skipTask)
-                return t;
-        });
+        let sortedTasks = this.state.tasks;
 
         if(newKey == '')
             return;
@@ -158,13 +150,13 @@ class Home extends Component {
         switch(newKey){
             case 'task':
                 if(newDescending)
-                    filteredTasks.sort(function(a, b) {return a.task.localeCompare(b.task)});
+                    sortedTasks.sort(function(a, b) {return a.task.localeCompare(b.task)});
                 else
-                    filteredTasks.sort(function(a, b) {return b.task.localeCompare(a.task)});
+                    sortedTasks.sort(function(a, b) {return b.task.localeCompare(a.task)});
                 break;
             case 'priority':
                 if(newDescending){
-                    filteredTasks.sort(function(a, b) {
+                    sortedTasks.sort(function(a, b) {
                         if(a.priority == 'High'){
                             if(b.priority == 'Med' || b.priority == 'Low')
                                 return 1;
@@ -188,7 +180,7 @@ class Home extends Component {
                     });
                 }
                 else {
-                    filteredTasks.sort(function(b, a) {
+                    sortedTasks.sort(function(b, a) {
                         if(a.priority == 'High'){
                             if(b.priority == 'Med' || b.priority == 'Low')
                                 return 1;
@@ -214,13 +206,32 @@ class Home extends Component {
                 break;
             case 'dueDate':
                 if(newDescending)
-                    filteredTasks.sort(function(a, b) {return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate()});
+                    sortedTasks.sort(function(a, b) {return new Date(a.dueDate).getDate() - new Date(b.dueDate).getDate()});
                 else
-                    filteredTasks.sort(function(a, b) {return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate()});
+                    sortedTasks.sort(function(a, b) {return new Date(b.dueDate).getDate() - new Date(a.dueDate).getDate()});
                 break;
         }
         
-        this.setState({filteredTasks: filteredTasks});
+        this.setState({sortedTasks: sortedTasks});
+    }
+
+    getUniqueTags(tasks){
+        var tags = [];
+        
+        tasks.forEach(task => {
+            task.tags.split(',').forEach(tag => {
+                if(tag && !tags.includes(tag.toLowerCase()))
+                    tags.push(tag.toLowerCase());
+            }
+        )});
+
+        return tags;
+    }
+
+    updateTagsFilter(tags) {
+        this.setState({tagFilter: tags});
+
+        console.log(this.state.tagFilter);
     }
 
     handleShowNewTaskModal(){
@@ -234,7 +245,7 @@ class Home extends Component {
     render() {
 
         const { width } = this.state;
-        const isMobile = width <= 500;
+        const isMobile = width <= 576;
 
         let today = new Date().setHours(0, 0, 0, 0);
 
@@ -246,7 +257,7 @@ class Home extends Component {
         yesterday.setDate(yesterday.getDate() + 1);
         yesterday = yesterday.setHours(0, 0, 0, 0);
 
-        const taskList = this.state.filteredTasks.map(task =>
+        const taskList = this.state.sortedTasks.map(task =>
             {
                 const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
                 const dueType = task.done ? "whenever" :
@@ -259,9 +270,19 @@ class Home extends Component {
                                         task.priority == "Med" ? "orange" : 
                                         "red";
 
-                if( this.state.key == 'all' ||
-                    (this.state.key == 'to-do' && task.done == false) ||
-                    (this.state.key == 'done' && task.done == true)) {
+                let skipTask = false;
+
+                if (this.state.tagFilter){
+                    task.tags.split(',').forEach(tag => {
+                        if(!this.state.tagFilter.indexOf(tag) > -1)
+                            skipTask = true;
+                    })
+                } 
+
+                if( !skipTask && 
+                    (this.state.status == 'all' ||
+                    (this.state.status == 'to-do' && task.done == false) ||
+                    (this.state.status == 'done' && task.done == true))) {
 
                     if(isMobile) {
                         return <TaskMobile key={task.key} 
@@ -272,7 +293,7 @@ class Home extends Component {
                             dueDateComparer={dueDateComparer} 
                             dueType={dueType}
                             priorityColor={priorityColor}
-                            filter={this.state.key}
+                            filter={this.state.status}
                             undoTask={this.undoTask}
                             completeTask={this.completeTask}
                             deleteTask={this.deleteTask}/>
@@ -285,7 +306,7 @@ class Home extends Component {
                             dueDateComparer={dueDateComparer} 
                             dueType={dueType}
                             priorityColor={priorityColor}
-                            filter={this.state.key}
+                            filter={this.state.status}
                             undoTask={this.undoTask}
                             completeTask={this.completeTask}
                             deleteTask={this.deleteTask}/>
@@ -293,47 +314,29 @@ class Home extends Component {
                 }
             }
         );
-        
-        let modalSize;
-        if(isMobile) 
-            modalSize = {dialogClassName: "modal-100w"};
-        else 
-            modalSize = {size: "lg"};
 
         return (
-            <div>
-                <Modal 
-                    { ...modalSize }
-                    show={this.state.showNewTaskModal} 
+            <div className="content-body">
+                <NewTaskModal 
+                    key="newTaskModal" 
+                    showModal={this.state.showNewTaskModal} 
+                    isMobile={isMobile} 
                     onHide={this.handleCloseNewTaskModal.bind(this)}
-                    centered
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>New Task</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <NewTask onHide={this.handleCloseNewTaskModal.bind(this)}/>
-                    </Modal.Body>
-                </Modal>
+                    uniqueTags={this.state.uniqueTags}
+                />
 
-                <Container>
-                    <Row>
-                        <Col xs={{ span: 10, offset: 1 }}>
+                {!isMobile ? <SideBar uniqueTags={this.state.uniqueTags} onUpdateTags={(tagFilter) => this.setState(tagFilter)}/> : "" }
 
-                            <Tabs
-                                id="tasks-filter-tab"
-                                activeKey={this.state.key}
-                                onSelect={key => this.setState({ key })}
-                            >
-                                <Tab eventKey="to-do" title="To Do"> </Tab>
-                                <Tab eventKey="done" title="Done"> </Tab>
-                                <Tab eventKey="all" title="All"> </Tab>
-                            </Tabs>
+                <Container fluid={true}>
+                    <Row noGutters={true}>
+                        <Col xs={{ span: 12 }} sm={{span: 10, offset: 1}} className="content-col">
+
+                            <StatusTabs status={this.state.status} onSelect={(status) => this.setState(status)}/>
 
                             <Table className="sort-bar">
                                 <thead>
                                     <tr>                                    
-                                        <th className="sortable" onClick={this.setFilter.bind(this, 'task')}>
+                                        <th className="sortable" onClick={this.setSort.bind(this, 'task')}>
                                             Task
                                             {
                                                 this.state.sortKey == 'task' ? 
@@ -347,7 +350,7 @@ class Home extends Component {
                                         <th>
                                             Tags
                                         </th>
-                                        <th className="sortable" onClick={this.setFilter.bind(this, 'priority')}>
+                                        <th className="sortable" onClick={this.setSort.bind(this, 'priority')}>
                                             Priority
                                             {
                                                 this.state.sortKey == 'priority' ? 
@@ -358,7 +361,7 @@ class Home extends Component {
                                                 <span className="fas fa-caret-down inactive"></span>
                                             }
                                         </th>
-                                        <th className="sortable" onClick={this.setFilter.bind(this, 'dueDate')}>
+                                        <th className="sortable" onClick={this.setSort.bind(this, 'dueDate')}>
                                             Due
                                             {
                                                 this.state.sortKey == 'dueDate' ? 

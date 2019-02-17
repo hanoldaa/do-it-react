@@ -1,6 +1,7 @@
 import React from 'react';
 import { OverlayTrigger, Tooltip, Popover, Table } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
+import './Task.css';
 
 function Task(props) {
 
@@ -12,7 +13,7 @@ function Task(props) {
                         new Date(props.task.dueDate).toLocaleDateString();
 
     if(props.task.tags){
-        tagsElement = <td className="tags float-right"> {props.task.tags.split(',').map(function(t){
+        tagsElement = <td className="tags"> {props.task.tags.split(',').map(function(t){
             return <span key={t} className="tag-pill" >
                     {t.toLowerCase()}
                 </span>})
@@ -20,7 +21,7 @@ function Task(props) {
         </td>
     }
     return <li>
-        <Table>
+        <Table className="desktop">
             <tbody>
                 <tr 
                     key={props.task.key} 
@@ -28,7 +29,7 @@ function Task(props) {
                 >
                     {
                         props.filter != 'all' ?
-                        <td className="row-button">
+                        <td className="task-button">
                             <OverlayTrigger
                                 key={props.task.key}
                                 placement='top'
@@ -45,7 +46,7 @@ function Task(props) {
                                     &#8634;
                                 </button> :
                                 <button className={`table-button ${props.task.priority}`} onClick={props.completeTask.bind(this, props.task.key)}>
-                                    &#10004;
+                                    <span className="fas fa-check"></span>
                                 </button>
                             }
                             </OverlayTrigger>
@@ -53,22 +54,23 @@ function Task(props) {
                         ""
                     }
                     <td className="content">
-                        {props.task.task}
+                        <span className="expand-height">{props.task.task}</span>
                         {props.task.notes ?
                             <OverlayTrigger
-                                trigger="click"
+                                trigger="focus"
                                 key={props.task.key}
                                 placement='auto'
                                 overlay={
                                 <Popover
                                     id={`${props.task.key} Note`}
                                     title={`Notes`}
+                                    variant="dark"
                                 >
                                     {props.task.notes}
                                 </Popover>
                                 }
                             >
-                                <button className="icon-button float-right"><span className="fas fa-sticky-note"></span></button>
+                                <button className="notes-button float-right"><span className="fas fa-sticky-note"></span></button>
                             </OverlayTrigger> :
                             ""}
                     </td>

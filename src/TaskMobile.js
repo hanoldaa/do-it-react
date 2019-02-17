@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
+import './TaskMobile.css';
 
 function TaskMobile(props) {
 
@@ -30,23 +31,23 @@ function TaskMobile(props) {
 
     if(props.task.notes){
         notesElement = <div className="task-info-stacked no-indent">
-            {props.task.notes}
+            <span className="expand-height">{props.task.notes}</span>
         </div>
     }
 
 
     return<li>
-        <Table className={`mobile ${props.dueType}`}>
+        <Table className="mobile">
             <tbody>
                 <tr 
                     key={props.task.key} 
-                    className={"mobile-row due-" + props.dueType}
+                    className={"mobile-row"}
                 >
                     <td className="mobile-cell">
 
                         {/* Task Display */}
                         <div className="task-info-stacked header">
-                            {props.task.task}
+                            <span className="expand-height">{props.task.task}</span>
                         </div>
 
                         {/* Notes Display */}
@@ -60,24 +61,24 @@ function TaskMobile(props) {
                         <div className="task-info-title">
                         Due
                         </div>
-                        <div className="task-info-stacked inline-block">
+                        <div className={`task-info-stacked inline-block due-${props.dueType}`}>
                             {dueDateString}
                         </div>
 
                         
                         {/* Delete/Done/Undo Display */}
                         <div className="task-info-stacked inline-block">
-                            <Button size="sm" onClick={props.deleteTask.bind(this, props.task.key)}>
+                            {/*<Button size="sm" onClick={props.deleteTask.bind(this, props.task.key)}>
                                 Delete It
-                            </Button>
+                            </Button>*/}
                         {
                             props.task.done ?
-                            <Button className="Low" size="sm" onClick={props.undoTask.bind(this, props.task.key)}>
-                                Redo It
-                            </Button> :
-                            <Button className={props.task.priority} size="sm" onClick={props.completeTask.bind(this, props.task.key)}>
-                                Did It
-                            </Button>
+                            <button className="table-button Low" onClick={props.undoTask.bind(this, props.task.key)}>
+                                <span className="fas fa-redo"></span>
+                            </button> :
+                            <button className={`table-button ${props.task.priority}`} onClick={props.completeTask.bind(this, props.task.key)}>
+                                <span className="fas fa-check"></span>
+                            </button>
                         }
                         </div>
                     </td>
