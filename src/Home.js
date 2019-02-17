@@ -122,9 +122,8 @@ class Home extends Component {
     }
 
     setSort(newKey){
-
         var newDescending;
-
+        
         if(this.state.sortKey == newKey){
             newDescending = !this.state.descending;
             this.setState({descending: !this.state.descending});
@@ -136,7 +135,7 @@ class Home extends Component {
                 descending: true
             });
         }
-
+        
         this.sortTasks(newKey, newDescending);
     }
 
@@ -228,12 +227,6 @@ class Home extends Component {
         return tags;
     }
 
-    updateTagsFilter(tags) {
-        this.setState({tagFilter: tags});
-
-        console.log(this.state.tagFilter);
-    }
-
     handleShowNewTaskModal(){
         this.setState({showNewTaskModal: true});
     }
@@ -257,6 +250,52 @@ class Home extends Component {
         yesterday.setDate(yesterday.getDate() + 1);
         yesterday = yesterday.setHours(0, 0, 0, 0);
 
+        let sortBar;
+        if(isMobile){
+            sortBar = <Table className="sort-bar">
+                <thead>
+                    <tr>                                    
+                        <th className="sortable" onClick={this.setSort.bind(this, 'task')}>
+                            Task
+                            {
+                                this.state.sortKey == 'task' ? 
+                                    (this.state.descending ? 
+                                        <span className="fas fa-caret-down"></span> :
+                                        <span className="fas fa-caret-up"></span>
+                                    ) :
+                                <span className="fas fa-caret-down inactive"></span>
+                            }
+                        </th>
+                        <th className="sortable" onClick={this.setSort.bind(this, 'priority')}>
+                            Priority
+                            {
+                                this.state.sortKey == 'priority' ? 
+                                    (this.state.descending ? 
+                                        <span className="fas fa-caret-down"></span> :
+                                        <span className="fas fa-caret-up"></span>
+                                    ) :
+                                <span className="fas fa-caret-down inactive"></span>
+                            }
+                        </th>
+                        <th className="sortable" onClick={this.setSort.bind(this, 'dueDate')}>
+                            Due
+                            {
+                                this.state.sortKey == 'dueDate' ? 
+                                    (this.state.descending ? 
+                                        <span className="fas fa-caret-down"></span> :
+                                        <span className="fas fa-caret-up"></span>
+                                    ) :
+                                <span className="fas fa-caret-down inactive"></span>
+                            }
+                        </th>
+                    </tr>
+                </thead>
+            </Table>
+        }
+        else{
+            sortBar = "";
+        }
+
         const taskList = this.state.sortedTasks.map(task =>
             {
                 const dueDateComparer = new Date(task.dueDate).setHours(0, 0, 0, 0);
@@ -270,14 +309,19 @@ class Home extends Component {
                                         task.priority == "Med" ? "orange" : 
                                         "red";
 
-                let skipTask = false;
+                let skipTask = true;
 
-                if (this.state.tagFilter){
+                if (this.state.tagFilter.length > 0){
                     task.tags.split(',').forEach(tag => {
-                        if(!this.state.tagFilter.indexOf(tag) > -1)
-                            skipTask = true;
+                        this.state.tagFilter.forEach(tagFilter => {
+                            if(tagFilter.toLowerCase() == tag.toLowerCase())
+                                skipTask = false;
+                        });
                     })
-                } 
+                }
+                else{
+                    skipTask = false;
+                }
 
                 if( !skipTask && 
                     (this.state.status == 'all' ||
@@ -325,56 +369,23 @@ class Home extends Component {
                     uniqueTags={this.state.uniqueTags}
                 />
 
-                {!isMobile ? <SideBar uniqueTags={this.state.uniqueTags} onUpdateTags={(tagFilter) => this.setState(tagFilter)}/> : "" }
+                {!isMobile ? 
+                    <SideBar 
+                        uniqueTags={this.state.uniqueTags} 
+                        onUpdateTags={(tagFilter) => this.setState({tagFilter: tagFilter})}
+                        onUpdateSortKey={(sortKey) => this.setSort(sortKey)}
+                        onUpdateStatus={(status) => this.setState({status: status})}
+                    /> : "" }
 
                 <Container fluid={true}>
                     <Row noGutters={true}>
-                        <Col xs={{ span: 12 }} sm={{span: 10, offset: 1}} className="content-col">
+                        <Col xs={{ span: 12 }} sm={{span: 11, offset: 1}} className="content-col">
 
-                            <StatusTabs status={this.state.status} onSelect={(status) => this.setState(status)}/>
+                            {isMobile ? 
+                                <StatusTabs status={this.state.status} onSelect={(status) => this.setState(status)}/> :
+                                ""}
 
-                            <Table className="sort-bar">
-                                <thead>
-                                    <tr>                                    
-                                        <th className="sortable" onClick={this.setSort.bind(this, 'task')}>
-                                            Task
-                                            {
-                                                this.state.sortKey == 'task' ? 
-                                                    (this.state.descending ? 
-                                                        <span className="fas fa-caret-down"></span> :
-                                                        <span className="fas fa-caret-up"></span>
-                                                    ) :
-                                                <span className="fas fa-caret-down inactive"></span>
-                                            }
-                                        </th>
-                                        <th>
-                                            Tags
-                                        </th>
-                                        <th className="sortable" onClick={this.setSort.bind(this, 'priority')}>
-                                            Priority
-                                            {
-                                                this.state.sortKey == 'priority' ? 
-                                                    (this.state.descending ? 
-                                                        <span className="fas fa-caret-down"></span> :
-                                                        <span className="fas fa-caret-up"></span>
-                                                    ) :
-                                                <span className="fas fa-caret-down inactive"></span>
-                                            }
-                                        </th>
-                                        <th className="sortable" onClick={this.setSort.bind(this, 'dueDate')}>
-                                            Due
-                                            {
-                                                this.state.sortKey == 'dueDate' ? 
-                                                    (this.state.descending ? 
-                                                        <span className="fas fa-caret-down"></span> :
-                                                        <span className="fas fa-caret-up"></span>
-                                                    ) :
-                                                <span className="fas fa-caret-down inactive"></span>
-                                            }
-                                        </th>
-                                    </tr>
-                                </thead>
-                            </Table>
+                            {sortBar}
                             <ul>
                                 {taskList}
                             </ul>

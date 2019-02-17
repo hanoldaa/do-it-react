@@ -10,33 +10,104 @@
     bottom: 0;
 }
 
-.side-bar .tag-filter-toggle {
+/*====================*/
+/*  Foldout Contents  */
+/*====================*/
+.side-bar .tag-filter-toggle, .side-bar .sort-toggle, .side-bar .status-toggle {
     vertical-align: middle;
     padding: .5rem 0 .5rem .5rem;
     cursor: pointer;
     transition: .15s;
     margin: 6px 0px;
+    font-size: smaller;
 }
-    .side-bar .tag-filter-toggle.active {
+    .side-bar .tag-filter-toggle.active, .side-bar .sort-toggle.active, .side-bar .status-toggle.active {
         border-radius: 5px 0px 0px 5px;
         background-color: #444;
     }
 
+    .side-bar .sort-toggle {
+        display: block;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        position:relative;
+    }
+
+    /*==============*/
+    /*  Sort Icons  */
+    /*==============*/
+    .side-bar .sort-toggle:before {
+        font-family: 'Font Awesome 5 Free';
+        position: absolute;
+        font-weight: 900;
+        font-size: small;
+        font-style: normal;
+        text-align: center;
+        left: .25rem;
+        width:  1rem;
+        height: 1.5rem;
+        display: block;
+    }    
+    .side-bar .sort-toggle.due:before {
+        content: '\f073';
+    }    
+    .side-bar .sort-toggle.priority:before {
+        content: '\f024';
+    }    
+    .side-bar .sort-toggle.task:before {
+        content: '\f031';
+    }
+
+/*================*/
+/*  Sort Chevrons */
+/*================*/
+.side-bar .sort-toggle.active:after {
+    font-family: 'Font Awesome 5 Free';
+    position: absolute;
+    font-weight: 900;
+    font-size: medium;
+    font-style: normal;
+    text-align: center;
+    right: .25rem;
+    width:  1rem;
+    height: .75rem;
+}    
+.side-bar .sort-toggle.descending:after {
+    content: '\f0d7';
+}
+.side-bar .sort-toggle.ascending:after {
+    content: '\f0d8';
+}
+
+/*=====================*/
+/*  Foldout Container  */
+/*=====================*/
 .Collapsible {
     position: relative;
     display: block;
     border-bottom: 1px solid #999;
+    margin-bottom: 1rem;
 }
+    .Collapsible:first-child {
+        border-bottom: none;
+    }
+/*==================*/
+/*  Foldout Header  */
+/*==================*/
     .Collapsible .Collapsible__trigger {
         cursor: pointer;
         display: block;
         border-bottom: 1px solid #999;
         padding-right: 1.5rem;
         padding-bottom: 6px;
-        position: relatives;
+        position: relative;
     }  
+
+    .Collapsible .Collapsible__trigger.is-disabled{
+        cursor: default;
+    }
     
-    .Collapsible .Collapsible__trigger:after {
+    .Collapsible .Collapsible__trigger:not(.is-disabled):after {
         font-family: 'Font Awesome 5 Free';
         content: '\f078';
         position: absolute;
@@ -55,6 +126,9 @@
             transform: rotateZ(90deg);
         }
 
+/*==================*/
+/*  Tag Filter Dot  */
+/*==================*/
 .side-bar .dot {
     height: 1rem;
     width: 1rem;
@@ -68,4 +142,5 @@
   }
 .side-bar .dot.active {
     background-color: #CCC;
+    border-color: #CCC;
   }

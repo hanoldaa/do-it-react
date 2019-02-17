@@ -29,6 +29,9 @@ ul {
     border: none;
     padding-bottom: 4px;
 }
+    .table th span {
+        display: inline;
+    }
     .table th span.inactive {
         color: #999;
     }

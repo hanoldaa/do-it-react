@@ -63,7 +63,8 @@ select.form-control, .form-control:focus, .form-group input, .react-tags {
       color: #CCC;
       position: absolute;
       right: 1rem;
-      top: 50%;
+      height: .5rem;
+      bottom: 50%;
       padding: 0px 6px;
     }
   
@@ -72,6 +73,10 @@ select.form-control, .form-control:focus, .form-group input, .react-tags {
       display: none;
     }
 
+.react-tags .react-tags__selected-tag {
+  background: #333;
+}
+    
 /*===============*/    
 /*  Date Picker  */
 /*===============*/
