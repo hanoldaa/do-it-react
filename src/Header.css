@@ -21,7 +21,7 @@
     color: #EEE;
     float: right;
     margin: 5px;
-    padding: 1rem 1rem 1rem 2rem;
+    padding: 1rem;
     position: relative;
     transition: 0.2s;
     vertical-align: middle;
@@ -33,6 +33,9 @@
     -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .3), 
                      0px 0px 9px rgba(0, 0, 0, .1);
 }
+    .header button.has-logo {
+        padding-left: 2rem;
+    }
     .header button:hover{
         text-decoration: none;
         background-color: #666;
@@ -47,7 +50,7 @@
         color: #EEE;
     }
 
-    .header button::before {
+    .header button.has-logo::before {
         content: '\f1a0';
         color: #EEE;
         font-family: 'Font Awesome 5 Brands';

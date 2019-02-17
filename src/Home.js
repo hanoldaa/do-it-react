@@ -83,6 +83,32 @@ class Home extends Component {
                 this.setState({ tasks: tasks, sortedTasks: tasks, uniqueTags: uniqueTags });
             }
         });
+        
+        fire.auth().onAuthStateChanged(user => {
+            if(this.state.isMounted){
+                if (user) {
+                    tasksRef.once("value", snapshot => {
+                        let tasks = [];
+            
+                        // Get each task
+                        snapshot.forEach(childSnapshot => {
+                            // Only add task if it belongs to the current user
+                            if(childSnapshot.val().user == fire.auth().currentUser.uid){
+                                tasks = [childSnapshot.val()].concat(tasks);
+                            }
+                        })
+            
+                        // Store the list of tasks if component is mounted
+                        if (this.state.isMounted) {
+                            var uniqueTags = this.getUniqueTags(tasks);
+                            this.setState({ tasks: tasks, sortedTasks: tasks, uniqueTags: uniqueTags });
+                        }
+                    });
+                } else {
+                    this.setState({tasks: [], sortedTasks: [], uniqueTags: []});
+                }
+            }
+        });
     }
     
     componentWillUnmount() {

@@ -15,6 +15,10 @@ class App extends Component {
         fire.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({user: user});
+                if(user.isAnonymous)
+                    console.log("Authenticated anonymously");
+                else
+                    console.log("Authenticated");
             } else {
                 console.log("Unauthenticated. Signing in anonymously...");
                 fire.auth().signInAnonymously().catch(function(error) {
@@ -28,7 +32,7 @@ class App extends Component {
                     }
 
                     this.setState({user: fire.auth().currentUser});
-                  });
+                });
             }
         });
     }
