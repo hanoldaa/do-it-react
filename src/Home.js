@@ -340,7 +340,8 @@ class Home extends Component {
                             filter={this.state.status}
                             undoTask={this.undoTask}
                             completeTask={this.completeTask}
-                            deleteTask={this.deleteTask}/>
+                            deleteTask={this.deleteTask}
+                            uniqueTags={this.state.uniqueTags}/>
                     } else {
                         return <Task key={task.key} 
                             task={task} 
@@ -353,7 +354,8 @@ class Home extends Component {
                             filter={this.state.status}
                             undoTask={this.undoTask}
                             completeTask={this.completeTask}
-                            deleteTask={this.deleteTask}/>
+                            deleteTask={this.deleteTask}
+                            uniqueTags={this.state.uniqueTags}/>
                     }                    
                 }
             }

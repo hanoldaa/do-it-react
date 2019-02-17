@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
+import fire from './fire';
+import firebase from 'firebase';
 import './Header.css';
 import { Navbar, Nav } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
 class Header extends Component {
@@ -15,20 +16,24 @@ class Header extends Component {
         this.props.history.push('/');
     }
 
+    onLogin() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        fire.auth().currentUser.linkWithPopup(provider).then(function(result) {
+            // The firebase.User instance:
+            var user = result.user;
+            // The Facebook firebase.auth.AuthCredential containing the Facebook
+            // access token:
+            var credential = result.credential;
+          }, function(error) {
+          });
+    }
+
     render(){
         return (
-            <div className="Header">
-                <Navbar>
-                    <Navbar.Brand className="header-brand" onClick={this.homeClicked.bind(this)}><h1>Do It</h1></Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav variant="pills" className="justify-content-end">
-                            <Nav.Item>
-                                <NavLink to='/login' className="disabled">Login</NavLink>
-                            </Nav.Item>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Navbar>
+            <div className="header">
+                <span>Do It</span>
+                <button onClick={this.onLogin.bind(this)}>Login</button>
             </div>
         );
     }

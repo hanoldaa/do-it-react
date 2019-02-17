@@ -13,7 +13,7 @@
   -moz-text-shadow: 0 1px 0 #fff;
 }
 
-.NewTaskModal {
+.EditTaskModal {
     margin: 1rem;
     font-family: Ubuntu, Arial, Helvetica, sans-serif;
   }
@@ -22,11 +22,11 @@
 /*==================*/
 /*  Add Task Button */
 /*==================*/
-.NewTaskModal .btn {
+.EditTaskModal .btn {
   background-color: rgb(66, 99, 110);
   border: none;
 }
-  .NewTaskModal .btn:hover {
+  .EditTaskModal .btn:hover {
     background-color: rgb(41, 65, 73);
   }
 
@@ -73,8 +73,12 @@ select.form-control, .form-control:focus, .form-group input, .form-group textare
       display: none;
     }
 
+/*================*/
+/*  Tags Buttons  */
+/*================*/
 .react-tags .react-tags__selected-tag {
   background: #333;
+  color: #CCC;
 }
     
 /*===============*/    
@@ -103,8 +107,9 @@ select.form-control, .form-control:focus, .form-group input, .form-group textare
   transition-delay: 0s;
   transition-duration: 0.15s;
   transition-timing-function: ease-in-out;
-  width: 330px;
+  width: 100%;
 }
 div.react-datepicker-wrapper, .react-datepicker-wrapper div.react-datepicker__input-container {
   display:block
 }
+

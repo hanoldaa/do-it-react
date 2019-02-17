@@ -1,38 +1,63 @@
-.navbar  {
+.header  {
     background-color: #333333;
+    padding: 1rem 2rem;
+    vertical-align: middle;
 }
 
-.header-brand {
-    cursor: pointer;
-}
-
-.header-brand h1 {
+.header span {
     color: #AAAAAA;
+    font-size: 3rem;
     font-family: 'Poiret One', sans-serif;
-    text-shadow: 0px 0px 2px #FFFFFF;
 }
 
-.navbar-nav a {
-    padding: 10px;
-    margin: 5px;
+.justify-content-end {
+    float: right;
+}
+
+.header button {
+    background-color: #777;
+    border: none;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px #222222;
-    background-color: #666666;
-    color: #CCCCCC;
+    color: #EEE;
+    float: right;
+    margin: 5px;
+    padding: 1rem 1rem 1rem 2rem;
+    position: relative;
     transition: 0.2s;
+    vertical-align: middle;
+    
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, .3), 
+                0px 0px 9px rgba(0, 0, 0, .1);
+    -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, .3), 
+                        0px 0px 9px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .3), 
+                     0px 0px 9px rgba(0, 0, 0, .1);
 }
-    .navbar-nav a:not(.disabled):hover{
+    .header button:hover{
         text-decoration: none;
-        background-color: #555555;
-        box-shadow: 2px 2px 8px #111111;
-        color: #EEEEEE;
+        background-color: #666;
+    
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                    0px 0px 9px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                            0px 0px 9px rgba(0, 0, 0, .3);
+        -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .5), 
+                         0px 0px 9px rgba(0, 0, 0, .3);
+
+        color: #EEE;
     }
 
-    .navbar-nav a.disabled{
-        background-color: #888888;
-        color: #AAAAAA;
-        pointer-events: none;
-    }
-    .navbar-nav a.disabled:hover{
-        text-decoration: none;
+    .header button::before {
+        content: '\f1a0';
+        color: #EEE;
+        font-family: 'Font Awesome 5 Brands';
+        position: absolute;
+        font-weight: 900;
+        font-size: medium;
+        font-style: normal;
+        text-align: center;
+        left: .5rem;
+        width:  1rem;
+        height: 1.5rem;
+        display: block;
     }

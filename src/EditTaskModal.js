@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
 import fire from "./fire";
-import "./NewTaskModal.css";
+import "./EditTaskModal.css";
 import { Modal, Form, Button, Container, Row, Col } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReactTags from 'react-tag-autocomplete';
 import './TagInput.css';
 
-class NewTaskModal extends Component {
+class EditTaskModal extends Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      dueDate: new Date(),
+      dueDate: new Date(props.task.dueDate),
       tags: [],
       suggestions: []
     };
@@ -21,6 +22,7 @@ class NewTaskModal extends Component {
   }
 
   componentWillMount(){
+    this.updateTags();
     this.updateSuggestions();
   }
 
@@ -28,12 +30,25 @@ class NewTaskModal extends Component {
     this.updateSuggestions();
   }
 
+  updateTags() {
+    var tags = [];
+
+    var uid = 0;
+    this.props.task.tags.split(',').forEach(tag => {
+      if(tag) {
+        tags.push({id: uid++, name: tag.toLowerCase()});
+      }
+    });
+
+    this.setState({tags: tags});
+  }
+
   updateSuggestions(){
     var suggestions = [];
 
     var uid = 0;
     this.props.uniqueTags.forEach(tag => {
-      suggestions.push({id: uid++, name: tag});
+      suggestions.push({id: uid++, name: tag.toLowerCase()});
     });
 
     this.setState({suggestions: suggestions});
@@ -49,27 +64,21 @@ class NewTaskModal extends Component {
 
   // Creates and adds the task to the database
   // Returns to the home page
-  addTask(e) {
+  editTask(e) {
     e.preventDefault();
 
-    // Generate new task key
-    var newTaskKey = fire.database().ref().child('tasks').push().key;
+    let updatedTask = this.props.task;
 
-    // Build new task
-    let task = {
-      key: newTaskKey,
-      task: this.task.value,
-      notes: this.notes.value ? this.notes.value : "",
-      tags: this.state.tags ? this.state.tags.map(t => t.name).join() : "",
-      priority: this.priority.value ? this.priority.value : "Low",
-      dueDate: this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever",
-      done: false,
-      user: fire.auth().currentUser ? fire.auth().currentUser.uid : "None"
-    }
+    // Update task
+    updatedTask.task = this.task.value;
+    updatedTask.notes = this.notes.value ? this.notes.value : "";
+    updatedTask.tags = this.state.tags ? this.state.tags.map(t => t.name).join() : "";
+    updatedTask.priority = this.priority.value ? this.priority.value : "Low";
+    updatedTask.dueDate = this.state.dueDate.toString() ? this.state.dueDate.toString() : "Whenever";
 
     // Initialize list of updates
     var updates = {};
-    updates['/tasks/' + newTaskKey] = task;
+    updates['/tasks/' + updatedTask.key] = updatedTask;
 
     // Add task to database
     fire.database().ref().update(updates);
@@ -95,7 +104,7 @@ class NewTaskModal extends Component {
     // Prevent duplicate tags
     if(this.state.tags.indexOf(tag) == -1){
       const tags = [].concat(this.state.tags, tag);
-      this.setState({ tags });
+      this.setState({ tags: tags });
     }
   }
 
@@ -115,24 +124,24 @@ class NewTaskModal extends Component {
           centered
       >
           <Modal.Header closeButton>
-              <Modal.Title>New Task</Modal.Title>
+              <Modal.Title>Edit Task</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="NewTaskModal">
+            <div className="EditTaskModal">
               <Container>
                 <Row>
                   <Col md={{ span: 12, offset: 0 }}>
-                    <Form onSubmit={this.addTask.bind(this)}>
+                    <Form onSubmit={this.editTask.bind(this)}>
                       <Form.Group controlId="task">
                         <Form.Label>Task</Form.Label>
-                        <Form.Control as="textarea" ref={t => this.task = t} required />
+                        <Form.Control as="textarea" defaultValue={this.props.task.task} ref={t => this.task = t} required />
                       </Form.Group>
                       <Form.Group controlId="notes">
                         <Form.Label>Notes <i>(optional)</i></Form.Label>
-                        <Form.Control ref={n => this.notes = n} />
+                        <Form.Control defaultValue={this.props.task.notes} ref={n => this.notes = n} />
                       </Form.Group>
                       <Form.Group controlId="tags">
-                        <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
+                        <Form.Label>Tags</Form.Label>
                         <ReactTags
                           tags={this.state.tags}
                           suggestions={this.state.suggestions}
@@ -147,7 +156,7 @@ class NewTaskModal extends Component {
                       <Form.Group controlId="priority">
                         <Form.Label>Priority</Form.Label>
                         <div className="priority-select">
-                          <Form.Control as="select" ref={p => this.priority = p} >
+                          <Form.Control as="select" defaultValue={this.props.task.priority} ref={p => this.priority = p} >
                             <option>Low</option>
                             <option>Med</option>
                             <option>High</option>
@@ -163,7 +172,7 @@ class NewTaskModal extends Component {
                         />
                       </Form.Group>
                       <Button type="submit" onClick={this.props.onHide.bind(this)}>
-                        Add Task
+                        Edit Task
                       </Button>
                     </Form>
                   </Col>
@@ -176,4 +185,4 @@ class NewTaskModal extends Component {
   }
 }
 
-export default hot(module)(NewTaskModal);
+export default hot(module)(EditTaskModal);

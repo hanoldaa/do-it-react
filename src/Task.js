@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { OverlayTrigger, Tooltip, Popover, Table } from 'react-bootstrap';
 import { hot } from "react-hot-loader";
 import './Task.css';
+import EditTaskModal from './EditTaskModal.js';
 
 class Task extends Component{
 
@@ -33,6 +34,15 @@ class Task extends Component{
         }
 
         return <li>
+
+            <EditTaskModal 
+                    key={"editTaskModal" + this.props.task.key}
+                    showModal={this.state.isEditing} 
+                    isMobile={false} 
+                    onHide={() => this.setState({isEditing: false})}
+                    uniqueTags={this.props.uniqueTags}
+                    task={this.props.task}/>
+
             <Table className="desktop">
                 <tbody>
                     <tr 
@@ -55,7 +65,7 @@ class Task extends Component{
                                 {
                                     this.props.task.done ?
                                     <button className="table-button Low" onClick={this.props.undoTask.bind(this, this.props.task.key)}>
-                                        &#8634;
+                                        <span className="fas fa-redo"></span>
                                     </button> :
                                     <button className={`table-button ${this.props.task.priority}`} onClick={this.props.completeTask.bind(this, this.props.task.key)}>
                                         <span className="fas fa-check"></span>

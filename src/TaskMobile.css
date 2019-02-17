@@ -139,15 +139,24 @@ Low: #999
         font-weight: bold;
     }
 
-    
-
+/*==============*/    
+/*  Task Title  */
+/*==============*/
 .table.mobile td .task-info-stacked.header {
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: #DDD;
     font-size: 16px;
     padding: 6px 0px 3px 0px;
+    position: relative;
 }
+.table.mobile td .task-info-stacked.header .options-button {
+    float: right;
+}
+
+/*================*/
+/*  Task Content  */
+/*================*/
 .table.mobile td .task-info-stacked {
     font-size: 12px;
     margin-left: 6px;

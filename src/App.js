@@ -14,7 +14,7 @@ class App extends Component {
     componentWillMount() {
         fire.auth().onAuthStateChanged(user => {
             if (user) {
-                console.log("Authenticated");
+                this.setState({user: user});
             } else {
                 console.log("Unauthenticated. Signing in anonymously...");
                 fire.auth().signInAnonymously().catch(function(error) {
@@ -22,18 +22,30 @@ class App extends Component {
                     var errorCode = error.code;
                     var errorMessage = error.message;
                     // ...
-                    console.log("Failed to sign in anonymously");
-                    console.log(errorMessage);
+                    if(errorMessage){
+                        console.log("Failed to sign in anonymously");
+                        console.log(errorMessage);
+                    }
+
+                    this.setState({user: fire.auth().currentUser});
                   });
             }
         });
     }
 
     render(){
+        let header;
+        let main;
+
+        if(this.state.user){
+            header = <Header />;
+            main = <Main />;
+        }
+
         return (
             <div className="app">
-                <Header />
-                <Main />
+            {header}
+            {main}
             </div>
         );
     }
