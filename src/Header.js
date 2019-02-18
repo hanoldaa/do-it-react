@@ -95,7 +95,7 @@ class Header extends Component {
         }
 
         return (
-            <div className="header">
+            <div className="page-header">
                 <span>Do It</span>
                 {authButton}
             </div>

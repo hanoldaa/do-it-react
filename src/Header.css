@@ -1,10 +1,10 @@
-.header  {
+.page-header  {
     background-color: #333333;
     padding: 1rem 2rem;
     vertical-align: middle;
 }
 
-.header span {
+.page-header span {
     color: #AAAAAA;
     font-size: 3rem;
     font-family: 'Poiret One', sans-serif;
@@ -14,7 +14,7 @@
     float: right;
 }
 
-.header button {
+.page-header button {
     background-color: #777;
     border: none;
     border-radius: 5px;
@@ -33,10 +33,10 @@
     -moz-box-shadow: 0px 2px 5px rgba(0, 0, 0, .3), 
                      0px 0px 9px rgba(0, 0, 0, .1);
 }
-    .header button.has-logo {
+    .page-header button.has-logo {
         padding-left: 2rem;
     }
-    .header button:hover{
+    .page-header button:hover{
         text-decoration: none;
         background-color: #666;
     
@@ -50,7 +50,7 @@
         color: #EEE;
     }
 
-    .header button.has-logo::before {
+    .page-header button.has-logo::before {
         content: '\f1a0';
         color: #EEE;
         font-family: 'Font Awesome 5 Brands';
