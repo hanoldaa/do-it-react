@@ -16,7 +16,8 @@ class EditTaskModal extends Component {
     this.state = {
       dueDate: new Date(props.task.dueDate),
       tags: [],
-      suggestions: []
+      suggestions: [],
+      task: props.task
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.tagInput = React.createRef();
@@ -29,13 +30,19 @@ class EditTaskModal extends Component {
 
   componentWillReceiveProps(){
     this.updateSuggestions();
+
+    if(this.props.task != this.state.task){
+      this.setState({task: this.props.task, dueDate: new Date(this.props.task.dueDate)}, () =>{
+        this.updateTags();
+      });
+    }
   }
 
   updateTags() {
     var tags = [];
 
     var uid = 0;
-    this.props.task.tags.split(',').forEach(tag => {
+    this.state.task.tags.split(',').forEach(tag => {
       if(tag) {
         tags.push({id: uid++, name: tag.toLowerCase()});
       }
@@ -78,7 +85,7 @@ class EditTaskModal extends Component {
   editTask(e) {
     e.preventDefault();
 
-    let updatedTask = this.props.task;
+    let updatedTask = this.state.task;
 
     // Update task
     updatedTask.task = this.task.value;
@@ -172,11 +179,11 @@ class EditTaskModal extends Component {
                     <Form onSubmit={this.editTask.bind(this)}>
                       <Form.Group controlId="task">
                         <Form.Label>Task</Form.Label>
-                        <Form.Control as="textarea" defaultValue={this.props.task.task} ref={t => this.task = t} required />
+                        <Form.Control as="textarea" defaultValue={this.state.task.task} ref={t => this.task = t} required />
                       </Form.Group>
                       <Form.Group controlId="notes">
                         <Form.Label>Notes <i>(optional)</i></Form.Label>
-                        <Form.Control defaultValue={this.props.task.notes} ref={n => this.notes = n} />
+                        <Form.Control defaultValue={this.state.task.notes} ref={n => this.notes = n} />
                       </Form.Group>
                       <Form.Group controlId="tags">
                         <Form.Label>Tags</Form.Label>
@@ -186,16 +193,16 @@ class EditTaskModal extends Component {
                           suggestions={this.state.suggestions}
                           handleDelete={this.handleDelete.bind(this)}
                           handleAddition={this.handleAddition.bind(this)} 
+                          handleInputChange={this.handleInputChange.bind(this)}
                           autofocus={false}
                           autoresize={false}
-                          delimiterChars={[',']}
                           allowNew={true}
                         />
                       </Form.Group>
                       <Form.Group controlId="priority">
                         <Form.Label>Priority</Form.Label>
                         <div className="priority-select">
-                          <Form.Control as="select" defaultValue={this.props.task.priority} ref={p => this.priority = p} >
+                          <Form.Control as="select" defaultValue={this.state.task.priority} ref={p => this.priority = p} >
                             <option>Low</option>
                             <option>Med</option>
                             <option>High</option>
