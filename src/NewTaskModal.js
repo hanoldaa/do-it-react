@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { hot } from "react-hot-loader";
 import fire from "./fire";
 import "./NewTaskModal.css";
@@ -16,8 +17,9 @@ class NewTaskModal extends Component {
       dueDate: new Date(),
       tags: [],
       suggestions: []
-    };
+      };
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.tagInput = React.createRef();
   }
 
   componentWillMount(){
@@ -45,6 +47,16 @@ class NewTaskModal extends Component {
     
     if(container)
       container.getElementsByTagName('input')[0].readOnly = true;
+  }
+
+  componentDidUpdate(){
+    // Override react-tags-autocomplete input 
+    // for custom delimiter checks for mobile support.
+    if(this.tagInput && 
+      this.tagInput.current &&
+      this.tagInput.current.input){
+        this.tagInput.current.input.props.inputEventHandlers.onInput = this.handleInputOverride.bind(this);
+    }
   }
 
   // Creates and adds the task to the database
@@ -93,10 +105,38 @@ class NewTaskModal extends Component {
   // Adds new tags from input
   handleAddition (tag) {
     // Prevent duplicate tags
-    if(this.state.tags.indexOf(tag) == -1){
+
+    var skip = false;
+    this.state.tags.forEach(currentTag => {
+      if(currentTag.name == tag.name)
+        skip = true;
+    });
+
+    if(!skip){
       const tags = [].concat(this.state.tags, tag);
       this.setState({ tags });
     }
+  }
+
+  handleInputChange(input) {
+    var lastChar = input[input.length - 1];
+
+    if(lastChar == ',')
+    {
+      var tag = {id: this.state.tags.length, name: input.substring(0, input.length - 1)};
+
+      this.tagInput.current.addTag(tag);
+    }
+  }
+
+  handleInputOverride (e) {
+    const query = e.target.value
+    
+    this.tagInput.current.setState({query: query}, () => {
+      if (this.tagInput.current.props.handleInputChange) {
+        this.tagInput.current.props.handleInputChange(query)
+      }
+    });
   }
 
   render() {
@@ -134,13 +174,14 @@ class NewTaskModal extends Component {
                       <Form.Group controlId="tags">
                         <Form.Label>Tags <i>(separated by commas)</i></Form.Label>
                         <ReactTags
+                          ref={this.tagInput}
                           tags={this.state.tags}
                           suggestions={this.state.suggestions}
                           handleDelete={this.handleDelete.bind(this)}
                           handleAddition={this.handleAddition.bind(this)} 
+                          handleInputChange={this.handleInputChange.bind(this)}
                           autofocus={false}
                           autoresize={false}
-                          delimiterChars={[',']}
                           allowNew={true}
                         />
                       </Form.Group>
